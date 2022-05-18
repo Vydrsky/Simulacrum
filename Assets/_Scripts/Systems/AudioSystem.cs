@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class AudioSystem : PersistantSingleton<AudioSystem> {
+public class AudioSystem : Singleton<AudioSystem> {
 
     /************************ FIELDS ************************/
 
