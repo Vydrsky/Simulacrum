@@ -717,13 +717,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519420032}
     m_Modifications:
+    - target: {fileID: 21162821, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 42369876, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 704587646, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004900582, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2070351735, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042788516559756756, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042788517292097922, guid: 1585a64302489be4187ec286a3665c34, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5042788518061201128, guid: 1585a64302489be4187ec286a3665c34, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5042788518061201128, guid: 1585a64302489be4187ec286a3665c34, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0015752
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5042788518061201128, guid: 1585a64302489be4187ec286a3665c34, type: 3}
       propertyPath: m_LocalPosition.y
@@ -763,7 +791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042788518061201129, guid: 1585a64302489be4187ec286a3665c34, type: 3}
       propertyPath: m_Name
-      value: Background
+      value: ParallaxBackground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1585a64302489be4187ec286a3665c34, type: 3}
