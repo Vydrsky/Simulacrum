@@ -25,8 +25,6 @@ public class ParallaxEffect : MonoBehaviour {
         childTransforms = GetComponentsInChildren<Transform>();
         furthestChild = childTransforms[1];
         foreach (Transform child in transform) {
-            if (child == childTransforms[0]) continue;
-            //if (child.parent != gameObject) continue;
             immediateChildren++;
         }
     }
