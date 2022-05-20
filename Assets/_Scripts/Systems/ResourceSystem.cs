@@ -1,12 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class ResourceSystem : Singleton<ResourceSystem> {
 
     /************************ FIELDS ************************/
 
-    //<summary>
-    //public Dictionaries of scriptable objects
-    //</summary>
+    [SerializeField] private List<GrapplingPointSO> levelPartsList = new List<GrapplingPointSO>();
+    public Dictionary<string, GrapplingPointSO> levelPartsDictionary = new Dictionary<string, GrapplingPointSO>(); 
+    
 
 
     /************************ INITIALIZE ************************/
@@ -19,8 +21,8 @@ public class ResourceSystem : Singleton<ResourceSystem> {
     /************************ METHODS ************************/
 
     private void AssembleResources() {
-        //<summary>
-        //Call Resources.LoadAll() to dictionary
-        //</summary>
+        levelPartsList = Resources.LoadAll<GrapplingPointSO>("LevelParts").ToList();
+        levelPartsDictionary = levelPartsList.ToDictionary(x => x.key, x => x);
+        Debug.Log(levelPartsDictionary.Values.Count);
     }
 }

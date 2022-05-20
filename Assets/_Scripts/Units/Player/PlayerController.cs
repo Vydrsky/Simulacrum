@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     private SpringJoint2D hook;
     private Rigidbody2D rb;
     private bool forceCanBeAdded = true;
+    private bool isTouched = false;
 
     [Range(0f,20f)]
     [SerializeField] private float RightForceOnHook = 5f;
@@ -34,13 +35,17 @@ public class PlayerController : MonoBehaviour {
             hook.enabled = false;
             hookLine.enabled = false;
             forceCanBeAdded = true;
+            isTouched = false;
             return;
         }
 
-        currentTouch = Input.GetTouch(0);
-        touchInWorldSpace = mainCam.ScreenToWorldPoint(currentTouch.position);
-        touchInWorldSpace.z = 0f;
-        coll = Physics2D.OverlapCircle(touchInWorldSpace, 1f);
+        if (!isTouched) {
+            currentTouch = Input.GetTouch(0);
+            touchInWorldSpace = mainCam.ScreenToWorldPoint(currentTouch.position);
+            touchInWorldSpace.z = 0f;
+            coll = Physics2D.OverlapCircle(touchInWorldSpace, 1f);
+            isTouched = true;
+        }
 
         if (coll == null) {
             return;
@@ -52,11 +57,13 @@ public class PlayerController : MonoBehaviour {
         hookLine.enabled = true;
         hook.enabled = true;
         hook.connectedBody = coll.gameObject.GetComponent<Rigidbody2D>();
+        hook.connectedAnchor = coll.transform.position;
         hookLine.SetPosition(1, coll.transform.position);
 
         if (!forceCanBeAdded) {
             return;
         }
+        hook.distance = Vector3.Distance(transform.position, coll.gameObject.transform.position) * 0.8f;
         rb.AddForce(new Vector2(RightForceOnHook, 0f), ForceMode2D.Impulse);
         forceCanBeAdded = false;
     }
