@@ -33,11 +33,10 @@ public class ParallaxEffect : MonoBehaviour {
     private void Update() {
         float cameraRelativePosition = mainCam.transform.position.x * (1 - parallaxEffect);
         float distance = mainCam.transform.position.x * parallaxEffect;
-        float padding = 0.9f;
 
         transform.position = new Vector3(distance, transform.position.y, transform.position.z);
-        Debug.Log(immediateChildren);
-        if(cameraRelativePosition > startpos + padding*length) {
+        //Debug.Log(immediateChildren);
+        if(cameraRelativePosition > startpos + length) {
             foreach(Transform child in transform) {
                 //get all background children
                 if(child.position.x < furthestChild.position.x) {
@@ -47,16 +46,16 @@ public class ParallaxEffect : MonoBehaviour {
             //move the most left children right by amount of immediate children tiles
             furthestChild.position += new Vector3(immediateChildren * length, 0f, 0f);
             //set new start position for the beggining of the next tile
-            startpos += padding * length;
+            startpos += length;
         }
-        if (cameraRelativePosition < startpos - padding * length) {
+        if (cameraRelativePosition < startpos - length) {
             foreach (Transform child in transform) {
                 if (child.position.x > furthestChild.position.x) {
                     furthestChild = child;
                 }
             }
             furthestChild.position += new Vector3(immediateChildren * -length, 0f, 0f);
-            startpos -= padding * length;
+            startpos -= length;
         }
     }
 
