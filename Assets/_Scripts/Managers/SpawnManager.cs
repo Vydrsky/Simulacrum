@@ -3,30 +3,46 @@ using UnityEngine;
 public class SpawnManager : Singleton<SpawnManager> {
 
     /************************ FIELDS ************************/
-    
-    
-    
-    /************************ INITIALIZE ************************/
 
+    [SerializeField] private Transform LevelParts;
+
+    /************************ INITIALIZE ************************/
     private void Start() {
-        for (int i = 0; i < 1000; i++) {
-            float xrand = Random.Range(0f, 1000f);
-            float yrand = Random.Range(0f, 22f);
+        ParallaxEnvironment.OnLevelPartsMoved += ParallaxEnvironment_OnLevelPartsMoved;
+    }
+
+
+    /************************ LOOPING ************************/
+
+    private void Update() {
+        
+    }
+
+    /************************ METHODS ************************/
+
+    public void Spawn(int amountToSpawn,Vector2 lowerBound,Vector3 upperBound) {
+        for (int i = 0; i < amountToSpawn; i++) {
+            float xrand = Random.Range(lowerBound.x, upperBound.x);
+            float yrand = Random.Range(lowerBound.y, upperBound.y);
 
             Instantiate(ResourceSystem.Instance.levelPartsDictionary["grapplingPoint"].prefab,
-                        new Vector3(xrand,yrand,0f),
+                        new Vector3(xrand, yrand, 0f),
                         Quaternion.identity,
                         GameObject.Find("LevelParts").transform);
 
         }
     }
 
-    /************************ LOOPING ************************/
-    private void Update() {
-
+    private void Despawn(Transform forwardTransform) {
+        foreach(Transform child in LevelParts) {
+            if(child.position.x < forwardTransform.position.x - 25f) {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
-    /************************ METHODS ************************/
-    
-    
+    private void ParallaxEnvironment_OnLevelPartsMoved(Transform arg1, float arg2) {
+        Spawn(10, arg1.position, arg1.position + new Vector3(arg2,22f - arg1.position.y,0f));
+        Despawn(arg1);
+    }
 }

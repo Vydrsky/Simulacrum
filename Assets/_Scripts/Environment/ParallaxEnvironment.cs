@@ -1,6 +1,6 @@
 using UnityEngine;
-
-public class ParallaxEffect : MonoBehaviour {
+using System;
+public class ParallaxEnvironment : MonoBehaviour {
 
     /************************ FIELDS ************************/
 
@@ -13,6 +13,8 @@ public class ParallaxEffect : MonoBehaviour {
 
     [Range(0f, 1f)]
     [SerializeField] private float parallaxEffect;
+
+    public static event Action<Transform,float> OnLevelPartsMoved;
 
     /************************ INITIALIZE ************************/
     private void Awake() {
@@ -47,8 +49,12 @@ public class ParallaxEffect : MonoBehaviour {
             furthestChild.position += new Vector3(immediateChildren * length, 0f, 0f);
             //set new start position for the beggining of the next tile
             startpos += length;
+            if (name == "Layer1") {
+                OnLevelPartsMoved?.Invoke(furthestChild.transform,length);
+                Debug.Log(name);
+            }
         }
-        if (cameraRelativePosition < startpos - length) {
+        else if (cameraRelativePosition < startpos - length) {
             foreach (Transform child in transform) {
                 if (child.position.x > furthestChild.position.x) {
                     furthestChild = child;
@@ -56,6 +62,8 @@ public class ParallaxEffect : MonoBehaviour {
             }
             furthestChild.position += new Vector3(immediateChildren * -length, 0f, 0f);
             startpos -= length;
+            if (name == "Layer1")
+                OnLevelPartsMoved?.Invoke(furthestChild.transform, length);
         }
     }
 
