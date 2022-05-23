@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6676671784564344ba5a1c9e62123168, type: 3}
   m_Name: grapplingPointSO
   m_EditorClassIdentifier: 
+  key: grapplingPoint
   prefab: {fileID: 8341586554003602970, guid: de46a9dae37385b4a804d9d2fc383c4b, type: 3}
-  weight: 10
-  isBeneficial: 1
+  weight: 0
+  isBeneficial: 0

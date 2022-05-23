@@ -6,8 +6,8 @@ public class ResourceSystem : Singleton<ResourceSystem> {
 
     /************************ FIELDS ************************/
 
-    [SerializeField] private List<GrapplingPointSO> levelPartsList = new List<GrapplingPointSO>();
-    public Dictionary<string, GrapplingPointSO> levelPartsDictionary = new Dictionary<string, GrapplingPointSO>(); 
+    [SerializeField] private List<LevelPart> levelPartsList = new List<LevelPart>();
+    public Dictionary<string, LevelPart> levelPartsDictionary = new Dictionary<string, LevelPart>(); 
     
 
 
@@ -21,7 +21,7 @@ public class ResourceSystem : Singleton<ResourceSystem> {
     /************************ METHODS ************************/
 
     private void AssembleResources() {
-        levelPartsList = Resources.LoadAll<GrapplingPointSO>("LevelParts").ToList();
+        levelPartsList = Resources.LoadAll<LevelPart>("LevelParts").ToList();
         levelPartsDictionary = levelPartsList.ToDictionary(x => x.key, x => x);
         Debug.Log(levelPartsDictionary.Values.Count);
     }

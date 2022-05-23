@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
             currentTouch = Input.GetTouch(0);
             touchInWorldSpace = mainCam.ScreenToWorldPoint(currentTouch.position);
             touchInWorldSpace.z = 0f;
-            coll = Physics2D.OverlapCircle(touchInWorldSpace, 1f);
+            coll = Physics2D.OverlapCircle(touchInWorldSpace, 2f);
             isTouched = true;
         }
 

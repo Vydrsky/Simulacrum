@@ -227,10 +227,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 25
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0.5
+  m_GravityScale: 0.3
   m_Material: {fileID: 6200000, guid: 09e0e82e7b3575349847a1976bd67904, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0377a6e3f527c488a6325b56d2ca2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightForceOnHook: 5
+  RightForceOnHook: 8.6
   hookLine: {fileID: 7256604511768314067}
 --- !u!231 &7256604512497860107
 SpringJoint2D:
@@ -257,7 +257,7 @@ SpringJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7256604512497860111}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_EnableCollision: 0
   m_ConnectedRigidBody: {fileID: 0}
@@ -266,7 +266,7 @@ SpringJoint2D:
   m_AutoConfigureConnectedAnchor: 0
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 1
-  m_Distance: 4.5794873
-  m_DampingRatio: 0.5
-  m_Frequency: 5
+  m_AutoConfigureDistance: 0
+  m_Distance: 5
+  m_DampingRatio: 0.4
+  m_Frequency: 1

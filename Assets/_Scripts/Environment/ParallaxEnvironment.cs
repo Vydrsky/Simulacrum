@@ -62,8 +62,6 @@ public class ParallaxEnvironment : MonoBehaviour {
             }
             furthestChild.position += new Vector3(immediateChildren * -length, 0f, 0f);
             startpos -= length;
-            if (name == "Layer1")
-                OnLevelPartsMoved?.Invoke(furthestChild.transform, length);
         }
     }
 
