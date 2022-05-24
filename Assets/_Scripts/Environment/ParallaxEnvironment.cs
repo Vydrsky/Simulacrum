@@ -10,11 +10,10 @@ public class ParallaxEnvironment : MonoBehaviour {
     private Transform furthestChild;
     private int immediateChildren = 0;
 
-
     [Range(0f, 1f)]
     [SerializeField] private float parallaxEffect;
 
-    public static event Action<Transform,float> OnLevelPartsMoved;
+    public static event Action<Transform, float> OnLevelPartsMoved;
 
     /************************ INITIALIZE ************************/
     private void Awake() {
@@ -33,15 +32,12 @@ public class ParallaxEnvironment : MonoBehaviour {
 
     /************************ LOOPING ************************/
     private void Update() {
-        float cameraRelativePosition = mainCam.transform.position.x * (1 - parallaxEffect);
-        float distance = mainCam.transform.position.x * parallaxEffect;
 
-        transform.position = new Vector3(distance, transform.position.y, transform.position.z);
-        //Debug.Log(immediateChildren);
-        if(cameraRelativePosition > startpos + length) {
-            foreach(Transform child in transform) {
+        float cameraRelativePosition = mainCam.transform.position.x * (1 - parallaxEffect);
+        if (cameraRelativePosition > startpos + length) {
+            foreach (Transform child in transform) {
                 //get all background children
-                if(child.position.x < furthestChild.position.x) {
+                if (child.position.x < furthestChild.position.x) {
                     furthestChild = child;
                 }
             }
@@ -50,8 +46,7 @@ public class ParallaxEnvironment : MonoBehaviour {
             //set new start position for the beggining of the next tile
             startpos += length;
             if (name == "Layer1") {
-                OnLevelPartsMoved?.Invoke(furthestChild.transform,length);
-                Debug.Log(name);
+                OnLevelPartsMoved?.Invoke(furthestChild.transform, length);
             }
         }
         else if (cameraRelativePosition < startpos - length) {
@@ -65,5 +60,7 @@ public class ParallaxEnvironment : MonoBehaviour {
         }
     }
 
-
+    private void FixedUpdate() {
+        transform.position = new Vector3(mainCam.transform.position.x * parallaxEffect, transform.position.y, transform.position.z);
+    }
 }
