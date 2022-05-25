@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1065333162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1065333163}
+  m_Layer: 0
+  m_Name: LaserStartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1065333163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065333162}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.127, y: 1.637, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7256604512497860110}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7256604511768314070
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +102,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Sprite: {fileID: 7313443056160511839, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -193,9 +223,11 @@ GameObject:
   - component: {fileID: 7256604512497860109}
   - component: {fileID: 7256604512497860108}
   - component: {fileID: 7256604512497860107}
+  - component: {fileID: 7256604511363007906}
+  - component: {fileID: 7256604511363007905}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,9 +241,10 @@ Transform:
   m_GameObject: {fileID: 7256604512497860111}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.06, y: 4.09, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 7256604511768314069}
+  - {fileID: 1065333163}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -227,10 +260,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 25
-  m_LinearDrag: 0
+  m_Mass: 2
+  m_LinearDrag: 0.05
   m_AngularDrag: 0
-  m_GravityScale: 0.3
+  m_GravityScale: 0.5
   m_Material: {fileID: 6200000, guid: 09e0e82e7b3575349847a1976bd67904, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -248,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0377a6e3f527c488a6325b56d2ca2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightForceOnHook: 8.6
+  RightForceOnHook: 2.2
   hookLine: {fileID: 7256604511768314067}
 --- !u!231 &7256604512497860107
 SpringJoint2D:
@@ -268,5 +301,39 @@ SpringJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
   m_Distance: 5
-  m_DampingRatio: 0.4
-  m_Frequency: 1
+  m_DampingRatio: 0.3
+  m_Frequency: 0.7
+--- !u!70 &7256604511363007906
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7256604512497860111}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 1.8}
+  m_Direction: 0
+--- !u!114 &7256604511363007905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7256604512497860111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9ebd8c5ca8c1446a31630f52c0bc97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteList:
+  - {fileID: 6366043100300736159, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
+  - {fileID: -3788507780073173130, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
+  - {fileID: -5839900865060052749, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
+  - {fileID: 7024563741219703230, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
+  - {fileID: 7313443056160511839, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}

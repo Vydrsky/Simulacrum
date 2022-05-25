@@ -12,7 +12,10 @@ public class GameManager : Singleton<GameManager> {
     
 
     /************************ METHODS ************************/
-    
+    private GameManager() {
+        State = GameState.Starting;
+    }
+
     public void ChangeState(GameState newState) {
         if (State == newState) return;
 
