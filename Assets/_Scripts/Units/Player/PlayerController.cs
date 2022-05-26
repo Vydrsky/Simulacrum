@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : Singleton<PlayerController> {
 
     /************************ FIELDS ************************/
 
@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
     private SpringJoint2D hook;
     private Rigidbody2D rb;
     private Transform laserStartTransform;
-
     private PlayerInput input;
 
 
@@ -22,13 +21,16 @@ public class PlayerController : MonoBehaviour {
 
     private PlayerState state;
     public PlayerState State {
+
         get { return state; }
-        private set {
+
+        set {
             if (value == state) return;
             state = value;
             switch (state) {
                 case PlayerState.Freefalling:
                     OnDeHooked?.Invoke();
+
                     hook.enabled = false;
                     hookLine.enabled = false;
                     rb.AddForce(new Vector2(0f, RightForceOnHook), ForceMode2D.Impulse);
@@ -36,7 +38,6 @@ public class PlayerController : MonoBehaviour {
                 case PlayerState.Hooked:
                     OnHooked?.Invoke();
 
-                    //if its all good create a logic connection
                     hook.distance = Vector3.Distance(transform.position, closestCollider.gameObject.transform.position);
                     hook.connectedBody = closestCollider.gameObject.GetComponent<Rigidbody2D>();
                     hook.connectedAnchor = closestCollider.transform.position;
@@ -51,7 +52,8 @@ public class PlayerController : MonoBehaviour {
     public static event Action OnDeHooked;
 
     /************************ INITIALIZE ************************/
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         input = new PlayerInput();
         mainCam = Camera.main;
         hook = GetComponent<SpringJoint2D>();
@@ -67,6 +69,11 @@ public class PlayerController : MonoBehaviour {
 
     /************************ LOOPING ************************/
     private void Update() {
+        if (State == PlayerState.Death) {
+            hook.enabled = false;
+            hookLine.enabled = false;
+            return;
+        };
         State = ControlStates();
         switch (State) {
             case PlayerState.Freefalling:
@@ -91,9 +98,10 @@ public class PlayerController : MonoBehaviour {
             closestCollider = null;
             //this check doesnt not allow for changing the collider once its attached and the screen is held
         }
-        if(input.isScreenBeingTouched()){
+        if(input.isScreenBeingTouched() &&!input.isUiBeingTouched()){
             if (closestCollider == null) {  //closest collider and input is only evaluated if the player is falling
                 touch = input.GetTheFirstTouch();
+                if (touch.phase != TouchPhase.Began) return PlayerState.Freefalling;
                 touchInWorldSpace = mainCam.ScreenToWorldPoint(touch.position);
                 touchInWorldSpace.z = 0f;
                 colliders = Physics2D.OverlapCircleAll(touchInWorldSpace, 4f);
@@ -106,7 +114,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
             //check if the collider is actually a grappling point
-            if (closestCollider.gameObject.tag.Contains("grapplingPoint"))
+            if (closestCollider != null && closestCollider.gameObject.tag.Contains("grapplingPoint"))
                 tempState = PlayerState.Hooked;
             else
                 tempState = PlayerState.Freefalling;
@@ -121,6 +129,7 @@ public class PlayerController : MonoBehaviour {
     public enum PlayerState {
         Standing,
         Freefalling,
-        Hooked
+        Hooked,
+        Death
     }
 }

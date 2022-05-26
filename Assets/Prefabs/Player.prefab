@@ -263,7 +263,7 @@ Rigidbody2D:
   m_Mass: 2
   m_LinearDrag: 0.05
   m_AngularDrag: 0
-  m_GravityScale: 0.5
+  m_GravityScale: 0.7
   m_Material: {fileID: 6200000, guid: 09e0e82e7b3575349847a1976bd67904, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0377a6e3f527c488a6325b56d2ca2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightForceOnHook: 2.2
+  RightForceOnHook: 5
   hookLine: {fileID: 7256604511768314067}
 --- !u!231 &7256604512497860107
 SpringJoint2D:
@@ -292,7 +292,7 @@ SpringJoint2D:
   m_GameObject: {fileID: 7256604512497860111}
   m_Enabled: 0
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc9ebd8c5ca8c1446a31630f52c0bc97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 7256604511768314068}
   spriteList:
   - {fileID: 6366043100300736159, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}
   - {fileID: -3788507780073173130, guid: 540fb58f737ea0e438867616a213f7d7, type: 3}

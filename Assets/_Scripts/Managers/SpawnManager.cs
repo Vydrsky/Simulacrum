@@ -54,4 +54,8 @@ public class SpawnManager : Singleton<SpawnManager> {
         Spawn(10, arg1.position, arg1.position + new Vector3(arg2,22f - arg1.position.y,0f));
         Despawn(arg1,arg2);
     }
+
+    private void OnDestroy() {
+        ParallaxEnvironment.OnLevelPartsMoved -= ParallaxEnvironment_OnLevelPartsMoved;
+    }
 }

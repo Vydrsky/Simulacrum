@@ -1,10 +1,12 @@
 using UnityEngine;
-
+using System;
 public class DeathPlane : MonoBehaviour {
 
     /************************ FIELDS ************************/
 
     [SerializeField] private Transform playerTransform;
+
+    public static event Action OnDeath;
 
     /************************ INITIALIZE ************************/
 
@@ -19,6 +21,7 @@ public class DeathPlane : MonoBehaviour {
         if (collider.gameObject.tag.Contains("Player")) {
             GameManager.Instance.ChangeState(GameManager.GameState.Ending);
             Debug.Log("DeathPlane Touched");
+            OnDeath?.Invoke();
         }
     }
 }

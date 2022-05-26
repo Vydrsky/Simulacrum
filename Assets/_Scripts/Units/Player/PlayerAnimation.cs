@@ -2,20 +2,18 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class PlayerAnimation : MonoBehaviour {
+public class PlayerAnimation : Singleton<PlayerAnimation> {
 
     /************************ FIELDS ************************/
 
-    private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private SpringJoint2D hook;
     private bool isHooked = false;
-
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private List<Sprite> spriteList;
     
     /************************ INITIALIZE ************************/
-    private void Awake() {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    protected override void Awake() {
         rb = GetComponent<Rigidbody2D>();
         hook = GetComponent<SpringJoint2D>();
     }
@@ -39,7 +37,7 @@ public class PlayerAnimation : MonoBehaviour {
         if (!isHooked) {
             if (rb.velocity.y > 0) {
                 spriteRenderer.sprite = spriteList[2]; // going up sprite
-                transform.rotation = Quaternion.Euler(0f, 0f, -10f);
+                transform.rotation = Quaternion.Euler(0f, 0f, -5f);
             }
             else if (rb.velocity.y < 0) {
                 spriteRenderer.sprite = spriteList[3]; // going down sprite
@@ -53,6 +51,9 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     /************************ METHODS ************************/
-    
-    
+
+    private void OnDestroy() {
+        PlayerController.OnHooked -= PlayerController_OnHooked;
+        PlayerController.OnDeHooked -= PlayerController_OnDeHooked;
+    }
 }
