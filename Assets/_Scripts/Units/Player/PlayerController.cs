@@ -29,14 +29,12 @@ public class PlayerController : Singleton<PlayerController> {
             state = value;
             switch (state) {
                 case PlayerState.Freefalling:
-                    OnDeHooked?.Invoke();
 
                     hook.enabled = false;
                     hookLine.enabled = false;
                     rb.AddForce(new Vector2(0f, RightForceOnHook), ForceMode2D.Impulse);
                     break;
                 case PlayerState.Hooked:
-                    OnHooked?.Invoke();
 
                     hook.distance = Vector3.Distance(transform.position, closestCollider.gameObject.transform.position);
                     hook.connectedBody = closestCollider.gameObject.GetComponent<Rigidbody2D>();
@@ -48,8 +46,6 @@ public class PlayerController : Singleton<PlayerController> {
             }
         }
     }
-    public static event Action OnHooked;
-    public static event Action OnDeHooked;
 
     /************************ INITIALIZE ************************/
     protected override void Awake() {
@@ -69,12 +65,6 @@ public class PlayerController : Singleton<PlayerController> {
 
     /************************ LOOPING ************************/
     private void Update() {
-        if (State == PlayerState.Death) {
-            hook.enabled = false;
-            hookLine.enabled = false;
-            return;
-        };
-        State = ControlStates();
         switch (State) {
             case PlayerState.Freefalling:
 
@@ -85,7 +75,12 @@ public class PlayerController : Singleton<PlayerController> {
                 hookLine.SetPosition(0, laserStartTransform.position);
                 hookLine.SetPosition(1, closestCollider.transform.position);
                 break;
+
+            case PlayerState.Death:
+                HandleDeath();
+                return;
         }
+        State = ControlStates();
     }
 
 
@@ -123,6 +118,14 @@ public class PlayerController : Singleton<PlayerController> {
             tempState = PlayerState.Freefalling; 
         }
         return tempState;
+    }
+
+    private void HandleDeath() {
+        hook.enabled = false;
+        hookLine.enabled = false;
+        rb.velocity = Vector3.zero;
+        rb.isKinematic = true;
+
     }
 
 

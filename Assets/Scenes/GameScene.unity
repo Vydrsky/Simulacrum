@@ -266,6 +266,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelPartsList: []
+  heroSpritesList: []
+  heroFragmentedSpritesList: []
 --- !u!1 &253604885
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,7 +3442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5699129384830003429, guid: c0f23dba3c37e9043bb810893114c404, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.48
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 5699129384830003429, guid: c0f23dba3c37e9043bb810893114c404, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3487,6 +3489,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 753826183}
     m_Modifications:
+    - target: {fileID: 7256604511363007905, guid: c6085f9ff6dd52a468690332075f316a, type: 3}
+      propertyPath: fragmentPrefab
+      value: 
+      objectReference: {fileID: 426230351764140257, guid: db6fe9b6e941b8b43ac8fea82d5b7107, type: 3}
+    - target: {fileID: 7256604511363007905, guid: c6085f9ff6dd52a468690332075f316a, type: 3}
+      propertyPath: yThresholdSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7256604511363007905, guid: c6085f9ff6dd52a468690332075f316a, type: 3}
       propertyPath: spriteList.Array.size
       value: 7

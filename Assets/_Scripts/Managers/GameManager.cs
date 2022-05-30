@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager> {
@@ -14,11 +15,11 @@ public class GameManager : Singleton<GameManager> {
     
 
     /************************ METHODS ************************/
-    private GameManager() {
+    protected override void Awake() {
+        base.Awake();
         State = GameState.Starting;
         DeathPlane.OnDeath += DeathPlane_OnDeath;
     }
-
 
     public void ChangeState(GameState newState) {
         if (State == newState) return;
@@ -44,6 +45,7 @@ public class GameManager : Singleton<GameManager> {
     private void DeathPlane_OnDeath() {
         PlayerController.Instance.State = PlayerController.PlayerState.Death;
         ChangeState(GameState.Ending);
+        StartCoroutine(TimeEffectOnDeathCoroutine());
     }
 
     private void HandleStarting() {
@@ -57,9 +59,23 @@ public class GameManager : Singleton<GameManager> {
         UIController.Instance.DisableAllUi();
         UIController.Instance.EnableEndingUi();
     }
+
+    private IEnumerator TimeEffectOnDeathCoroutine() {
+        Time.timeScale = 0.25f;
+        Time.fixedDeltaTime = Time.timeScale * 0.01f;
+        yield return new WaitForSeconds(0.2f);
+        while (true) {
+            if (Time.timeScale >= 1f) {
+                Time.timeScale = 1f;
+                break;
+            }
+            Time.timeScale += Time.deltaTime*5f;
+            Time.fixedDeltaTime = Time.timeScale * 0.01f;
+            yield return null;
+        }
+    }
     
     public void ReloadScene() {
-        //needs change later
         SceneManager.LoadScene("GameScene");
     }
 
@@ -71,6 +87,7 @@ public class GameManager : Singleton<GameManager> {
 
     private void OnDestroy() {
         DeathPlane.OnDeath -= DeathPlane_OnDeath;
+        StopAllCoroutines();
     }
 }
 

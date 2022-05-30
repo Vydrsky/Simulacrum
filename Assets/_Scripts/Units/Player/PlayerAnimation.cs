@@ -8,43 +8,42 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
 
     private Rigidbody2D rb;
     private SpringJoint2D hook;
-    private bool isHooked = false;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private List<Sprite> spriteList;
-    
+    private SpriteRenderer spriteRenderer;
+
+    [SerializeField] private float yThresholdSpeed;
+    [SerializeField] private GameObject fragmentPrefab;
+
     /************************ INITIALIZE ************************/
     protected override void Awake() {
         rb = GetComponent<Rigidbody2D>();
         hook = GetComponent<SpringJoint2D>();
+        spriteRenderer = transform.Find("Graphic").GetComponent<SpriteRenderer>();
     }
 
     private void Start() {
-        PlayerController.OnHooked += PlayerController_OnHooked;
-        PlayerController.OnDeHooked += PlayerController_OnDeHooked;
+        DeathPlane.OnDeath += DeathPlane_OnDeath;
     }
 
-    private void PlayerController_OnDeHooked() {
-        isHooked = false;
-    }
-
-    private void PlayerController_OnHooked() {
-        spriteRenderer.sprite = spriteList[6]; // hooked sprite
-        isHooked = true;
-    }
 
     /************************ LOOPING ************************/
     private void Update() {
-        if (!isHooked) {
+        if (PlayerController.Instance.State == PlayerController.PlayerState.Freefalling) {
+            transform.rotation = Quaternion.Euler(0f, 0f, -5f);
             if (rb.velocity.y > 0) {
-                spriteRenderer.sprite = spriteList[2]; // going up sprite
-                transform.rotation = Quaternion.Euler(0f, 0f, -5f);
+                if (rb.velocity.y > yThresholdSpeed)
+                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[3];  // going up fast sprite
+                else
+                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[2];  // going up sprite
             }
             else if (rb.velocity.y < 0) {
-                spriteRenderer.sprite = spriteList[4]; // going down sprite
-                transform.rotation = Quaternion.Euler(0f, 0f, 10f);
+                if (rb.velocity.y < -yThresholdSpeed)
+                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[5];  // going down fast sprite
+                else 
+                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[4];  // going down fast sprite
             }
         }
-        else {
+        else if(PlayerController.Instance.State == PlayerController.PlayerState.Hooked) {
+            spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[6]; // hooked sprite
             Vector3 targetVector = (Vector3)hook.connectedAnchor - transform.position;
             transform.rotation = Quaternion.LookRotation(Vector3.forward, targetVector);
         }
@@ -52,8 +51,21 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
 
     /************************ METHODS ************************/
 
-    private void OnDestroy() {
-        PlayerController.OnHooked -= PlayerController_OnHooked;
-        PlayerController.OnDeHooked -= PlayerController_OnDeHooked;
+    private void DeathPlane_OnDeath() {
+        spriteRenderer.enabled = false;
+        foreach (var sprite in ResourceSystem.Instance.heroFragmentedSpritesList) {
+            GameObject temp= Instantiate(fragmentPrefab,transform.position,Quaternion.identity);
+            temp.GetComponent<SpriteRenderer>().sprite = sprite;
+            temp.transform.rotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-180f, 180f));
+            Rigidbody2D temprb = temp.GetComponent<Rigidbody2D>();
+            Vector2 forceVector = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-90f, 90f)) * Vector2.up * 20f;
+            temprb.AddForce(forceVector,ForceMode2D.Impulse);
+            temprb.AddTorque(4f,ForceMode2D.Impulse);
+        }
     }
+
+    private void OnDestroy() {
+        DeathPlane.OnDeath -= DeathPlane_OnDeath;
+    }
+
 }
