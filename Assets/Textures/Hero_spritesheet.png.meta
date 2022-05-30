@@ -1,22 +1,49 @@
 fileFormatVersion: 2
-guid: 540fb58f737ea0e438867616a213f7d7
+guid: 7808fe2208b6a974d91a954c2dd164cc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6366043100300736159
-    second: Hero_spritesheet_0
+      213: -7452802237240328756
+    second: Hero (5)_0
   - first:
-      213: -3788507780073173130
-    second: Hero_spritesheet_1
+      213: -5752900727060832429
+    second: Hero (5)_1
   - first:
-      213: -5839900865060052749
-    second: Hero_spritesheet_2
+      213: 6910756411489010725
+    second: Hero (5)_2
   - first:
-      213: 7024563741219703230
-    second: Hero_spritesheet_3
+      213: -4140063138884495258
+    second: Hero (5)_3
   - first:
-      213: 7313443056160511839
-    second: Hero_spritesheet_4
+      213: 5962537572959734844
+    second: Hero (5)_4
+  - first:
+      213: 3118804098231510454
+    second: Hero (5)_5
+  - first:
+      213: -8564111951267521624
+    second: Hero (5)_6
+  - first:
+      213: 3274289743846879371
+    second: Hero_SpriteSheet_0
+  - first:
+      213: 5558988357865634069
+    second: Hero_SpriteSheet_1
+  - first:
+      213: -6618002578030453403
+    second: Hero_SpriteSheet_2
+  - first:
+      213: 2952513334958159049
+    second: Hero_SpriteSheet_3
+  - first:
+      213: 2041002317491665675
+    second: Hero_SpriteSheet_4
+  - first:
+      213: 1240013428136699728
+    second: Hero_SpriteSheet_5
+  - first:
+      213: -4195029064428536609
+    second: Hero_SpriteSheet_6
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -58,7 +85,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -118,28 +145,91 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hero_spritesheet_0
+      name: Hero_SpriteSheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 399
+        y: 800
         width: 240
         height: 400
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f967042987ab85850800000000000000
-      internalID: 6366043100300736159
+      spriteID: b80b2b19c2d907d20800000000000000
+      internalID: 3274289743846879371
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_spritesheet_1
+      name: Hero_SpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 800
+        width: 240
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 519fc1d657e752d40800000000000000
+      internalID: 5558988357865634069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hero_SpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 800
+        width: 240
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56d10ed08b12824a0800000000000000
+      internalID: -6618002578030453403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hero_SpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 400
+        width: 240
+        height: 400
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c4f8cc2c3f69f820800000000000000
+      internalID: 2952513334958159049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hero_SpriteSheet_4
       rect:
         serializedVersion: 2
         x: 240
@@ -147,20 +237,20 @@ TextureImporter:
         width: 240
         height: 400
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67f4fe31f348c6bc0800000000000000
-      internalID: -3788507780073173130
+      spriteID: b0bf6d74bc8135c10800000000000000
+      internalID: 2041002317491665675
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_spritesheet_2
+      name: Hero_SpriteSheet_5
       rect:
         serializedVersion: 2
         x: 480
@@ -168,20 +258,20 @@ TextureImporter:
         width: 240
         height: 400
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3f06996ba1184fea0800000000000000
-      internalID: -5839900865060052749
+      spriteID: 0576dcc94a9653110800000000000000
+      internalID: 1240013428136699728
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hero_spritesheet_3
+      name: Hero_SpriteSheet_6
       rect:
         serializedVersion: 2
         x: 0
@@ -189,35 +279,14 @@ TextureImporter:
         width: 240
         height: 400
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eb94d7141834c7160800000000000000
-      internalID: 7024563741219703230
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hero_spritesheet_4
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 1
-        width: 240
-        height: 400
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f579e7716b19e7560800000000000000
-      internalID: 7313443056160511839
+      spriteID: fdc3c48ca4348c5c0800000000000000
+      internalID: -4195029064428536609
       vertices: []
       indices: 
       edges: []

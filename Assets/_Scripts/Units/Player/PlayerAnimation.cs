@@ -28,7 +28,7 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     }
 
     private void PlayerController_OnHooked() {
-        spriteRenderer.sprite = spriteList[4]; // hooked sprite
+        spriteRenderer.sprite = spriteList[6]; // hooked sprite
         isHooked = true;
     }
 
@@ -40,7 +40,7 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
                 transform.rotation = Quaternion.Euler(0f, 0f, -5f);
             }
             else if (rb.velocity.y < 0) {
-                spriteRenderer.sprite = spriteList[3]; // going down sprite
+                spriteRenderer.sprite = spriteList[4]; // going down sprite
                 transform.rotation = Quaternion.Euler(0f, 0f, 10f);
             }
         }
