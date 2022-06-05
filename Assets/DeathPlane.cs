@@ -20,7 +20,6 @@ public class DeathPlane : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collider) {
         if (collider.gameObject.tag.Contains("Player")) {
             GameManager.Instance.ChangeState(GameManager.GameState.Ending);
-            Debug.Log("DeathPlane Touched");
             OnDeath?.Invoke();
         }
     }

@@ -21,7 +21,8 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     }
 
     private void Start() {
-        DeathPlane.OnDeath += DeathPlane_OnDeath;
+        DeathPlane.OnDeath += Death_OnDeath;
+        DeathLaser.OnDeath += Death_OnDeath;
     }
 
 
@@ -51,7 +52,7 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
 
     /************************ METHODS ************************/
 
-    private void DeathPlane_OnDeath() {
+    private void Death_OnDeath() {
         spriteRenderer.enabled = false;
         foreach (var sprite in ResourceSystem.Instance.heroFragmentedSpritesList) {
             GameObject temp= Instantiate(fragmentPrefab,transform.position,Quaternion.identity);
@@ -65,7 +66,8 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     }
 
     private void OnDestroy() {
-        DeathPlane.OnDeath -= DeathPlane_OnDeath;
+        DeathPlane.OnDeath -= Death_OnDeath;
+        DeathLaser.OnDeath -= Death_OnDeath;
     }
 
 }

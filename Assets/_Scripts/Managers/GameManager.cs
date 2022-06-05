@@ -18,8 +18,10 @@ public class GameManager : Singleton<GameManager> {
     protected override void Awake() {
         base.Awake();
         State = GameState.Starting;
-        DeathPlane.OnDeath += DeathPlane_OnDeath;
+        DeathPlane.OnDeath += Death_OnDeath;
+        DeathLaser.OnDeath += Death_OnDeath;
     }
+
 
     public void ChangeState(GameState newState) {
         if (State == newState) return;
@@ -42,11 +44,12 @@ public class GameManager : Singleton<GameManager> {
         OnAfterStateChanged?.Invoke(newState);
     }
 
-    private void DeathPlane_OnDeath() {
+    private void Death_OnDeath() {
         PlayerController.Instance.State = PlayerController.PlayerState.Death;
         ChangeState(GameState.Ending);
         StartCoroutine(TimeEffectOnDeathCoroutine());
     }
+
 
     private void HandleStarting() {
 
@@ -86,8 +89,9 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void OnDestroy() {
-        DeathPlane.OnDeath -= DeathPlane_OnDeath;
-        StopAllCoroutines();
+        DeathPlane.OnDeath -= Death_OnDeath;
+        DeathLaser.OnDeath -= Death_OnDeath;
+        Time.timeScale = 1f;
     }
 }
 

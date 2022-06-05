@@ -21,7 +21,7 @@ public class SpawnManager : Singleton<SpawnManager> {
 
     /************************ METHODS ************************/
 
-    public void Spawn(int amountToSpawn,Vector2 lowerBound,Vector3 upperBound) {
+    private void SpawnGrapplingHooks(int amountToSpawn,Vector2 lowerBound,Vector3 upperBound) {
         for (int i = 0; i < amountToSpawn; i++) {
             Collider2D[] colliders = { };
             float xrand, yrand;
@@ -42,6 +42,39 @@ public class SpawnManager : Singleton<SpawnManager> {
         }
     }
 
+    private void SpawnDeathLasers(int amountToSpawn, Vector2 lowerBound, Vector3 upperBound) {
+        for (int i = 0; i < amountToSpawn; i++) {
+            Collider2D[] colliders = { };
+            float xrand, yrand;
+            float tempSpacing = spawnSpacing;
+            do {
+                xrand = Random.Range(lowerBound.x, upperBound.x);
+                yrand = Random.Range(lowerBound.y, upperBound.y);
+
+                colliders = Physics2D.OverlapCircleAll(new Vector2(xrand, yrand), tempSpacing);
+                tempSpacing -= 0.5f;
+            } while (colliders.Length != 0);
+
+            GameObject laserObject = Instantiate(ResourceSystem.Instance.levelPartsDictionary["deathLaser"].prefab,
+                        new Vector3(xrand, yrand, 0f),
+                        Quaternion.identity,
+                        GameObject.Find("LevelParts").transform);
+            float node1RandX = xrand;
+            float node2RandY = yrand;
+            tempSpacing = spawnSpacing;
+            do {
+                xrand = Random.Range(node1RandX-5f, node1RandX + 5f);
+                yrand = Random.Range(node2RandY - 5f, node2RandY + 5f);
+
+                colliders = Physics2D.OverlapCircleAll(new Vector2(xrand, yrand), tempSpacing);
+                tempSpacing -= 0.5f;
+            } while (colliders.Length != 0);
+            DeathLaser laser = laserObject.GetComponent<DeathLaser>();
+            laser.Node2.position = new Vector2(xrand, yrand);
+            laser.SetLaser();
+        }
+    }
+
     private void Despawn(Transform forwardTransform,float length) {
         foreach(Transform child in LevelParts) {
             if(child.position.x < forwardTransform.position.x - length*5f) {
@@ -51,7 +84,8 @@ public class SpawnManager : Singleton<SpawnManager> {
     }
 
     private void ParallaxEnvironment_OnLevelPartsMoved(Transform arg1, float arg2) {
-        Spawn(10, arg1.position, arg1.position + new Vector3(arg2,22f - arg1.position.y,0f));
+        SpawnGrapplingHooks(10, arg1.position, arg1.position + new Vector3(arg2,22f - arg1.position.y,0f));
+        SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 22f - arg1.position.y, 0f));
         Despawn(arg1,arg2);
     }
 
