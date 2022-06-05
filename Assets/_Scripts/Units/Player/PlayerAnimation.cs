@@ -59,7 +59,7 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
             temp.GetComponent<SpriteRenderer>().sprite = sprite;
             temp.transform.rotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-180f, 180f));
             Rigidbody2D temprb = temp.GetComponent<Rigidbody2D>();
-            Vector2 forceVector = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-90f, 90f)) * Vector2.up * 20f;
+            Vector2 forceVector = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-180f, 180f)) * Vector2.up * 15f;
             temprb.AddForce(forceVector,ForceMode2D.Impulse);
             temprb.AddTorque(4f,ForceMode2D.Impulse);
         }

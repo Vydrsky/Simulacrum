@@ -84,8 +84,8 @@ public class SpawnManager : Singleton<SpawnManager> {
     }
 
     private void ParallaxEnvironment_OnLevelPartsMoved(Transform arg1, float arg2) {
-        SpawnGrapplingHooks(10, arg1.position, arg1.position + new Vector3(arg2,22f - arg1.position.y,0f));
-        SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 22f - arg1.position.y, 0f));
+        SpawnGrapplingHooks(10, arg1.position, arg1.position + new Vector3(arg2,30f - arg1.position.y,0f));
+        SpawnDeathLasers(2, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f));
         Despawn(arg1,arg2);
     }
 
