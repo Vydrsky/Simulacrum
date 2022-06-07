@@ -9,8 +9,11 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     private Rigidbody2D rb;
     private SpringJoint2D hook;
     private SpriteRenderer spriteRenderer;
+    private Timer timer;
+    private int spriteIterator = 0;
 
     [SerializeField] private float yThresholdSpeed;
+    [SerializeField] private float frameLength;
     [SerializeField] private GameObject fragmentPrefab;
 
     /************************ INITIALIZE ************************/
@@ -18,35 +21,44 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
         rb = GetComponent<Rigidbody2D>();
         hook = GetComponent<SpringJoint2D>();
         spriteRenderer = transform.Find("Graphic").GetComponent<SpriteRenderer>();
+        timer = new Timer();
     }
 
     private void Start() {
         DeathPlane.OnDeath += Death_OnDeath;
         DeathLaser.OnDeath += Death_OnDeath;
+        timer.OnTimerCountingEnd += Timer_OnTimerCountingEnd;
     }
 
 
     /************************ LOOPING ************************/
     private void Update() {
-        if (PlayerController.Instance.State == PlayerController.PlayerState.Freefalling) {
-            transform.rotation = Quaternion.Euler(0f, 0f, -5f);
-            if (rb.velocity.y > 0) {
-                if (rb.velocity.y > yThresholdSpeed)
-                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[3];  // going up fast sprite
-                else
-                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[2];  // going up sprite
-            }
-            else if (rb.velocity.y < 0) {
-                if (rb.velocity.y < -yThresholdSpeed)
-                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[5];  // going down fast sprite
-                else 
-                    spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[4];  // going down fast sprite
-            }
-        }
-        else if(PlayerController.Instance.State == PlayerController.PlayerState.Hooked) {
-            spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[6]; // hooked sprite
-            Vector3 targetVector = (Vector3)hook.connectedAnchor - transform.position;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, targetVector);
+        timer.Tick();
+
+        switch (PlayerController.Instance.State) {
+            case PlayerController.PlayerState.Freefalling:
+                transform.rotation = Quaternion.Euler(0f, 0f, -5f);
+                if (rb.velocity.y > 0) {
+                    if (rb.velocity.y > yThresholdSpeed)
+                        spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[3];  // going up fast sprite
+                    else
+                        spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[2];  // going up sprite
+                }
+                else if (rb.velocity.y < 0) {
+                    if (rb.velocity.y < -yThresholdSpeed)
+                        spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[5];  // going down fast sprite
+                    else
+                        spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[4];  // going down fast sprite
+                }
+                break;
+            case PlayerController.PlayerState.Hooked:
+                spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[6]; // hooked sprite
+                Vector3 targetVector = (Vector3)hook.connectedAnchor - transform.position;
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, targetVector);
+                break;
+            case PlayerController.PlayerState.Standing:
+                HandleStandingAnimations();
+                break;
         }
     }
 
@@ -63,6 +75,21 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
             temprb.AddForce(forceVector,ForceMode2D.Impulse);
             temprb.AddTorque(4f,ForceMode2D.Impulse);
         }
+    }
+
+
+    private void Timer_OnTimerCountingEnd() {
+        Debug.Log("boom");
+        timer.StopTimer();
+        spriteIterator++;
+        //currently 2 sprites
+        if(spriteIterator > 1) spriteIterator = 0;
+        timer.StartTimer(frameLength);
+    }
+
+    private void HandleStandingAnimations() {
+        spriteRenderer.sprite = ResourceSystem.Instance.heroSpritesList[spriteIterator];
+        timer.StartTimer(frameLength);
     }
 
     private void OnDestroy() {

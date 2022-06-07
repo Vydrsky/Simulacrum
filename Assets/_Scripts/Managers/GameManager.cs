@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager> {
 
     public static event Action<GameState> OnBeforeStateChanged;
     public static event Action<GameState> OnAfterStateChanged;
+    public static event Action OnGameStarted;
     
     public GameState State { get; private set; }
     
@@ -52,15 +53,16 @@ public class GameManager : Singleton<GameManager> {
 
 
     private void HandleStarting() {
-
+        PlayerController.Instance.State = PlayerController.PlayerState.Standing;
     }
 
     private void HandleRunning() {
-
+        PlayerController.Instance.State = PlayerController.PlayerState.Freefalling;
+        OnGameStarted?.Invoke();
     }
     private void HandleEnding() {
-        UIController.Instance.DisableAllUi();
-        UIController.Instance.EnableEndingUi();
+        GameUI.Instance.DisableAllUi();
+        GameUI.Instance.EnableEndingUi();
     }
 
     private IEnumerator TimeEffectOnDeathCoroutine() {

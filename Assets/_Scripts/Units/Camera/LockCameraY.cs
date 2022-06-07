@@ -10,7 +10,7 @@ using Cinemachine;
 [AddComponentMenu("")] // Hide in menu
 public class LockCameraY : CinemachineExtension {
     
-    private float reachedPos=0;
+    private float reachedPos=float.MinValue;
 
     public float minYPosition = 0;
     public float maxYPosition = 22;

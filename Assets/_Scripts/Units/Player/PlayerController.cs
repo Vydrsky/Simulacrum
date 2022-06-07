@@ -29,7 +29,7 @@ public class PlayerController : Singleton<PlayerController> {
             state = value;
             switch (state) {
                 case PlayerState.Freefalling:
-
+                    rb.isKinematic = false;
                     hook.enabled = false;
                     hookLine.enabled = false;
                     rb.AddForce(new Vector2(0f, RightForceOnHook), ForceMode2D.Impulse);
@@ -43,6 +43,7 @@ public class PlayerController : Singleton<PlayerController> {
                     hook.enabled = true;
                     rb.AddForce(new Vector2(RightForceOnHook, 0f), ForceMode2D.Impulse);
                     break;
+                    
             }
         }
     }
@@ -58,13 +59,16 @@ public class PlayerController : Singleton<PlayerController> {
     }
 
     private void Start() {
-        //temp
-        State = PlayerState.Freefalling;
+        State = PlayerState.Standing;
+        rb.isKinematic = true;
+        GameManager.OnGameStarted += GameManager_OnGameStarted;
     }
+
 
 
     /************************ LOOPING ************************/
     private void Update() {
+        if (State == PlayerState.Standing) return;
         switch (State) {
             case PlayerState.Freefalling:
 
@@ -128,11 +132,18 @@ public class PlayerController : Singleton<PlayerController> {
 
     }
 
+    private void GameManager_OnGameStarted() {
+        rb.AddForce(new Vector3(10f, 15f, 0f),ForceMode2D.Impulse);
+    }
 
     public enum PlayerState {
         Standing,
         Freefalling,
         Hooked,
         Death
+    }
+
+    private void OnDestroy() {
+        GameManager.OnGameStarted -= GameManager_OnGameStarted;
     }
 }

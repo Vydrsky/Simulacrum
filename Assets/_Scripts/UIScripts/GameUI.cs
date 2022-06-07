@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class UIController : Singleton<UIController> {
+public class GameUI : Singleton<GameUI> {
 
     /************************ FIELDS ************************/
 
@@ -32,7 +32,7 @@ public class UIController : Singleton<UIController> {
 
     /************************ LOOPING ************************/
     private void Update() {
-        scoreText.text = mainCam.transform.position.x.ToString("0");
+        scoreText.text = Mathf.Clamp(mainCam.transform.position.x,0f,Mathf.Infinity).ToString("0");
         cooldownTimer.Tick();
         if (cooldownTimer.isRunning) {
             jumpButtonImage.fillAmount += Time.deltaTime/jumpCooldown;

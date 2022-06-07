@@ -15,9 +15,11 @@ public class Timer {
     /************************ METHODS ************************/
 
     public void StartTimer(float duration) {
-        StartTime = Time.time;
-        isRunning = true;
-        Duration = duration;
+        if (!isRunning) {
+            StartTime = Time.time;
+            isRunning = true;
+            Duration = duration;
+        }
     }
 
     public void Tick() {
