@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class BlackHole : MonoBehaviour {
 
     /************************ FIELDS ************************/
-    [SerializeField] private int frameLength;
+    [SerializeField] private float frameLength;
+    [SerializeField] private float gravityRange;
+    [SerializeField] private float gravityForce;
 
     private SpriteRenderer spriteRenderer;
     private Timer timer;
@@ -26,6 +29,10 @@ public class BlackHole : MonoBehaviour {
         timer.Tick();
     }
 
+    private void FixedUpdate() {
+        GravitatePlayer();
+    }
+
     /************************ METHODS ************************/
 
     private void Timer_OnTimerCountingEnd() {
@@ -35,4 +42,16 @@ public class BlackHole : MonoBehaviour {
         spriteRenderer.sprite = ResourceSystem.Instance.blackHoleSpritesList[iterator];
         timer.StartTimer(frameLength);
     }
+
+    private void GravitatePlayer() {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,gravityRange);
+        foreach(Collider2D collider in colliders) {
+            if (collider.gameObject.tag.Contains("Player")) {
+                Vector2 direction = (transform.position - collider.transform.position).normalized;
+                Debug.Log("SUCTION");
+                collider.GetComponent<Rigidbody2D>().AddForce(direction * gravityForce * Time.fixedDeltaTime);
+            }
+        }
+    }
+
 }

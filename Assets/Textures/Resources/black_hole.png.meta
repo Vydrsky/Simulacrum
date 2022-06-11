@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 17333ecd9d48bca4889ea89d31050c17
+guid: 5855d848ca344a74ab6ff0e696b66758
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -14,6 +14,9 @@ TextureImporter:
   - first:
       213: 6235470813538365189
     second: black_hole_3
+  - first:
+      213: -2944868163433318797
+    second: black_hole_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -44,7 +47,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 2
+    filterMode: -1
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -119,9 +122,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
-        width: 160
-        height: 160
+        y: 1600
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,10 +142,10 @@ TextureImporter:
       name: black_hole_1
       rect:
         serializedVersion: 2
-        x: 160
-        y: 160
-        width: 160
-        height: 160
+        x: 800
+        y: 1600
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,9 +164,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 160
-        height: 160
+        y: 800
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,10 +184,10 @@ TextureImporter:
       name: black_hole_3
       rect:
         serializedVersion: 2
-        x: 160
-        y: 0
-        width: 160
-        height: 160
+        x: 800
+        y: 800
+        width: 800
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,6 +197,27 @@ TextureImporter:
       bones: []
       spriteID: 50f25400ba7d88650800000000000000
       internalID: 6235470813538365189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: black_hole_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 800
+        height: 800
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3763338020ab127d0800000000000000
+      internalID: -2944868163433318797
       vertices: []
       indices: 
       edges: []

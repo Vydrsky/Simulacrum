@@ -79,7 +79,6 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
 
 
     private void Timer_OnTimerCountingEnd() {
-        Debug.Log("boom");
         timer.StopTimer();
         spriteIterator++;
         //currently 2 sprites
