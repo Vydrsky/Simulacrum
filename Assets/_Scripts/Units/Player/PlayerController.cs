@@ -15,6 +15,7 @@ public class PlayerController : Singleton<PlayerController> {
     private PlayerInput input;
 
 
+    [SerializeField] private Vector2 jumpButtonForce;
     [Range(0f, 20f)]
     [SerializeField] private float RightForceOnHook = 5f;
     [SerializeField] private LineRenderer hookLine;
@@ -43,7 +44,8 @@ public class PlayerController : Singleton<PlayerController> {
                     hook.enabled = true;
                     rb.AddForce(new Vector2(RightForceOnHook, 0f), ForceMode2D.Impulse);
                     break;
-                    
+
+
             }
         }
     }
@@ -62,6 +64,7 @@ public class PlayerController : Singleton<PlayerController> {
         State = PlayerState.Standing;
         rb.isKinematic = true;
         GameManager.OnGameStarted += GameManager_OnGameStarted;
+        GameUI.OnJump += GameUI_OnJump;
     }
 
 
@@ -136,6 +139,12 @@ public class PlayerController : Singleton<PlayerController> {
         rb.AddForce(new Vector3(10f, 15f, 0f),ForceMode2D.Impulse);
     }
 
+    private void GameUI_OnJump() {
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        rb.AddForce(new Vector2(jumpButtonForce.x, jumpButtonForce.y), ForceMode2D.Impulse);
+    }
+
+
     public enum PlayerState {
         Standing,
         Freefalling,
@@ -145,5 +154,6 @@ public class PlayerController : Singleton<PlayerController> {
 
     private void OnDestroy() {
         GameManager.OnGameStarted -= GameManager_OnGameStarted;
+        GameUI.OnJump -= GameUI_OnJump;
     }
 }

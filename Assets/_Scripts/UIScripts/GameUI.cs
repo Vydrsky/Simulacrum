@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class GameUI : Singleton<GameUI> {
 
@@ -9,12 +10,12 @@ public class GameUI : Singleton<GameUI> {
 
     private TextMeshProUGUI scoreText;
     private Camera mainCam;
-    private Timer cooldownTimer;
     private Image jumpButtonImage;
-    [SerializeField] private Rigidbody2D playerRb;
-    [SerializeField] private Vector2 jumpButtonForce;
     [SerializeField] private float jumpCooldown = 5f;
     [SerializeField] private List<GameObject> endingUiList;
+
+    public static event Action OnJump;
+    public Timer cooldownTimer;
 
     /************************ INITIALIZE ************************/
     protected override void Awake() {
@@ -42,12 +43,13 @@ public class GameUI : Singleton<GameUI> {
     /************************ METHODS ************************/
     
     public void HandleJumpButton() {
+
         if (!cooldownTimer.isRunning && PlayerController.Instance.State == PlayerController.PlayerState.Freefalling) {
             jumpButtonImage.fillAmount = 0;
-            playerRb.velocity = new Vector2(playerRb.velocity.x,0f);
-            playerRb.AddForce(new Vector2(jumpButtonForce.x, jumpButtonForce.y),ForceMode2D.Impulse);
+            OnJump?.Invoke();
             cooldownTimer.StartTimer(jumpCooldown);
         }
+        
     }
 
     public void HandleTryAgainButton() {

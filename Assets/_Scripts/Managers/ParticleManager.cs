@@ -5,15 +5,17 @@ public class ParticleManager : MonoBehaviour {
 
     /************************ FIELDS ************************/
     [SerializeField] private List<ParticleSystem> deathParticleSystems;
+    [SerializeField] private List<ParticleSystem> jumpParticleSystems;
 
     /************************ INITIALIZE ************************/
     private void Awake() {
-        DeathLaser.OnDeath += Death_OnDeath;
-        DeathPlane.OnDeath += Death_OnDeath;
     }
 
 
     private void Start() {
+        DeathLaser.OnDeath += Death_OnDeath;
+        DeathPlane.OnDeath += Death_OnDeath;
+        GameUI.OnJump += GameUI_OnJump;
     }
 
     /************************ LOOPING ************************/
@@ -29,8 +31,16 @@ public class ParticleManager : MonoBehaviour {
         }
     }
 
+    private void GameUI_OnJump() {
+        foreach (var particleSystem in jumpParticleSystems) {
+            particleSystem.Play();
+        }
+    }
+
+
     private void OnDestroy() {
         DeathLaser.OnDeath -= Death_OnDeath;
         DeathPlane.OnDeath -= Death_OnDeath;
+        GameUI.OnJump -= GameUI_OnJump;
     }
 }
