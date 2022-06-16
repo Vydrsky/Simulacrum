@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager> {
 
     public static event Action<GameState> OnBeforeStateChanged;
     public static event Action<GameState> OnAfterStateChanged;
+    public static event Action OnMenuLoaded;
     public static event Action OnGameStarted;
     
     public GameState State { get; private set; }
@@ -22,7 +23,9 @@ public class GameManager : Singleton<GameManager> {
         DeathPlane.OnDeath += Death_OnDeath;
         DeathLaser.OnDeath += Death_OnDeath;
     }
-
+    private void Start() {
+        OnMenuLoaded?.Invoke();
+    }
 
     public void ChangeState(GameState newState) {
         if (State == newState) return;

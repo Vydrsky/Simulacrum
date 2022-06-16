@@ -18,7 +18,6 @@ public class PlayerController : Singleton<PlayerController> {
     [SerializeField] private Vector2 jumpButtonForce;
     [Range(0f, 20f)]
     [SerializeField] private float ForceOnHook = 5f;
-    [SerializeField] private float BoostForce = 10f;
     [SerializeField] private LineRenderer hookLine;
 
     private PlayerState state;
@@ -139,7 +138,6 @@ public class PlayerController : Singleton<PlayerController> {
             if (closestCollider != null &&
                 (closestCollider.gameObject.tag.Contains("grapplingPoint") || closestCollider.gameObject.tag.Contains("booster"))) {
                 tempState = PlayerState.Hooked;
-                Debug.Log(closestCollider);
             }
             else
                 tempState = PlayerState.Freefalling;

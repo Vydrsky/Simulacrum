@@ -46,7 +46,6 @@ public class DeathLaser : MonoBehaviour {
 
 
     private void OnTriggerEnter2D(Collider2D collider) {
-        Debug.Log("triggerEntered");
         if (collider.gameObject.tag.Contains("Player")) {
             GameManager.Instance.ChangeState(GameManager.GameState.Ending);
             OnDeath?.Invoke();

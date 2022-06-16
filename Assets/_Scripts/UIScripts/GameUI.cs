@@ -15,6 +15,7 @@ public class GameUI : Singleton<GameUI> {
     [SerializeField] private List<GameObject> endingUiList;
 
     public static event Action OnJump;
+    public static event Action OnRetryPressed;
     public Timer cooldownTimer;
 
     /************************ INITIALIZE ************************/
@@ -53,6 +54,7 @@ public class GameUI : Singleton<GameUI> {
     }
 
     public void HandleTryAgainButton() {
+        OnRetryPressed?.Invoke();
         GameManager.Instance.ReloadScene();
     }
 

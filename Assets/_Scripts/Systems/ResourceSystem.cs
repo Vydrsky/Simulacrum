@@ -32,7 +32,6 @@ public class ResourceSystem : Singleton<ResourceSystem> {
         levelPartsDictionary = levelPartsList.ToDictionary(x => x.key, x => x);
         heroSpritesList = Resources.LoadAll<Sprite>("Hero_SpriteSheet").ToList();
         heroFragmentedSpritesList = Resources.LoadAll<Sprite>("Hero_Fragmented").ToList();
-        Debug.Log(heroSpritesList.Count + " " + heroFragmentedSpritesList.Count);
         blackHoleSpritesList = Resources.LoadAll<Sprite>("black_hole").ToList();
     }
 }

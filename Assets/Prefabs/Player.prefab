@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.8
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -222,7 +222,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.97957945, b: 1, a: 1}
+      maxColor: {r: 0.5137255, g: 0.8156863, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0, b: 0, a: 1}
@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.7
+      scalar: 1.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1379,7 +1379,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 0.39215687}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
@@ -5127,6 +5127,7 @@ Transform:
   - {fileID: 1065333163}
   - {fileID: 7256604510859607300}
   - {fileID: 7256604512607848809}
+  - {fileID: 6050711234921813919}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5143,8 +5144,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 2
-  m_LinearDrag: 0.05
-  m_AngularDrag: 0
+  m_LinearDrag: 0
+  m_AngularDrag: 0.1
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 09e0e82e7b3575349847a1976bd67904, type: 2}
   m_Interpolate: 1
@@ -5164,7 +5165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpButtonForce: {x: 2, y: 20}
-  RightForceOnHook: 5
+  ForceOnHook: 5
   hookLine: {fileID: 7256604511768314067}
 --- !u!231 &7256604512497860107
 SpringJoint2D:
@@ -5217,6 +5218,36 @@ MonoBehaviour:
   yThresholdSpeed: 4
   frameLength: 1
   fragmentPrefab: {fileID: 426230351764140257, guid: db6fe9b6e941b8b43ac8fea82d5b7107, type: 3}
+--- !u!1 &8426385872091997753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6050711234921813919}
+  m_Layer: 0
+  m_Name: AudioSourceHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6050711234921813919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8426385872091997753}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7256604512497860110}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3129103624751224019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5234,7 +5265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5753467753698588365, guid: 02b0e561593013148a21fd9da40e3ffa, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5753467753763990024, guid: 02b0e561593013148a21fd9da40e3ffa, type: 3}
       propertyPath: lengthInSec
