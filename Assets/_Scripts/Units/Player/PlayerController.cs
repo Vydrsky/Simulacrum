@@ -17,7 +17,8 @@ public class PlayerController : Singleton<PlayerController> {
 
     [SerializeField] private Vector2 jumpButtonForce;
     [Range(0f, 20f)]
-    [SerializeField] private float RightForceOnHook = 5f;
+    [SerializeField] private float ForceOnHook = 5f;
+    [SerializeField] private float BoostForce = 10f;
     [SerializeField] private LineRenderer hookLine;
 
     private PlayerState state;
@@ -28,27 +29,7 @@ public class PlayerController : Singleton<PlayerController> {
         set {
             if (value == state) return;
             state = value;
-            switch (state) {
-                case PlayerState.Freefalling:
-                    rb.isKinematic = false;
-                    hook.enabled = false;
-                    hookLine.enabled = false;
-                    rb.AddForce(new Vector2(0f, RightForceOnHook), ForceMode2D.Impulse);
-                    break;
-                case PlayerState.Hooked:
-
-                    hook.distance = Vector3.Distance(transform.position, closestCollider.gameObject.transform.position);
-                    hook.connectedBody = closestCollider.gameObject.GetComponent<Rigidbody2D>();
-                    hook.connectedAnchor = closestCollider.transform.position;
-                    hookLine.enabled = true;
-                    hook.enabled = true;
-                    rb.AddForce(new Vector2(RightForceOnHook, 0f), ForceMode2D.Impulse);
-                    break;
-                case PlayerState.Death:
-                    HandleDeath();
-                    break;
-
-            }
+            ControlStateEntry();
         }
     }
 
@@ -91,7 +72,46 @@ public class PlayerController : Singleton<PlayerController> {
 
 
     /************************ METHODS ************************/
-    public PlayerState ControlStates() {
+
+    private void ControlStateEntry() {
+        switch (state) {
+            case PlayerState.Freefalling:
+                rb.isKinematic = false;
+                hook.enabled = false;
+                hookLine.enabled = false;
+                hook.frequency = 0.7f;
+                hook.dampingRatio = 0.3f;
+                if (rb.velocity.sqrMagnitude < ForceOnHook * ForceOnHook)
+                    rb.AddForce(new Vector2(0f, ForceOnHook), ForceMode2D.Impulse);
+                break;
+            case PlayerState.Hooked:
+                hook.connectedBody = closestCollider.gameObject.GetComponent<Rigidbody2D>();
+                hook.connectedAnchor = closestCollider.transform.position;
+                hookLine.enabled = true;
+                hook.enabled = true;
+                switch (closestCollider.gameObject.tag) {
+                    case "booster":
+                        Vector3 dir = closestCollider.transform.position - transform.position;
+                        rb.velocity = Vector2.zero;
+                        hook.distance = 1.5f;
+                        hook.frequency = 0.65f;
+                        hook.dampingRatio = 1f;
+                        //rb.AddForce(dir.normalized * BoostForce, ForceMode2D.Impulse);
+                        break;
+                    case "grapplingPoint":
+                        hook.distance = Vector3.Distance(transform.position, closestCollider.gameObject.transform.position);
+                        if(rb.velocity.sqrMagnitude <ForceOnHook*ForceOnHook)
+                            rb.AddForce(new Vector2(ForceOnHook, 0f), ForceMode2D.Impulse);
+                        break;
+                }
+                break;
+            case PlayerState.Death:
+                HandleDeath();
+                break;
+
+        }
+    }
+    private PlayerState ControlStates() {
         PlayerState tempState = PlayerState.Freefalling;
         Touch touch;
 
@@ -116,8 +136,11 @@ public class PlayerController : Singleton<PlayerController> {
                 }
             }
             //check if the collider is actually a grappling point
-            if (closestCollider != null && closestCollider.gameObject.tag.Contains("grapplingPoint"))
+            if (closestCollider != null &&
+                (closestCollider.gameObject.tag.Contains("grapplingPoint") || closestCollider.gameObject.tag.Contains("booster"))) {
                 tempState = PlayerState.Hooked;
+                Debug.Log(closestCollider);
+            }
             else
                 tempState = PlayerState.Freefalling;
         }

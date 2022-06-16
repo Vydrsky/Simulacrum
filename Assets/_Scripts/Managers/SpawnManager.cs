@@ -5,7 +5,7 @@ public class SpawnManager : Singleton<SpawnManager> {
 
     /************************ FIELDS ************************/
 
-    [SerializeField] private uint goodCredits=100;
+    [SerializeField] private uint goodCredits=150;
     [SerializeField] private uint badCredits=20;
     [SerializeField] private Transform LevelParts;
     [SerializeField] private float spawnSpacing;
@@ -88,31 +88,37 @@ public class SpawnManager : Singleton<SpawnManager> {
         uint goodCreditsCache;
         foreach (KeyValuePair<string, LevelPart> keyValuePair in ResourceSystem.Instance.levelPartsDictionary) {
             //set credits function
-            if (keyValuePair.Value.isBeneficial && keyValuePair.Value.weight <= goodCredits) {
-                goodCreditsCache = goodCredits;
-                do {
-                    SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
-                                    ResourceSystem.Instance.levelPartsDictionary["grapplingPoint"].prefab);
-                    goodCreditsCache -= keyValuePair.Value.weight;
-                } while (goodCreditsCache > keyValuePair.Value.weight);
+            if (keyValuePair.Value.isBeneficial) {
+                goodCreditsCache = goodCredits + keyValuePair.Value.bank;
+                if (keyValuePair.Value.weight <= goodCredits + keyValuePair.Value.bank) {
+                    keyValuePair.Value.bank = 0;
+                    do {
+                        SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
+                                      keyValuePair.Value.prefab);
+                        goodCreditsCache -= keyValuePair.Value.weight;
+                    } while (goodCreditsCache > keyValuePair.Value.weight);
+                }
+                keyValuePair.Value.bank += goodCreditsCache - keyValuePair.Value.bank;
             }
-            badCreditsCache = badCredits + keyValuePair.Value.bank;
-            if (!keyValuePair.Value.isBeneficial && keyValuePair.Value.weight <= badCredits + keyValuePair.Value.bank) {
-                keyValuePair.Value.bank = 0;
-                do {
-                    switch (keyValuePair.Key) {
-                        case "blackHole":
-                            SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
-                                ResourceSystem.Instance.levelPartsDictionary["blackHole"].prefab);
-                            break;
-                        case "deathLaser":
-                            SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f));
-                            break;
-                    }
-                    badCreditsCache -= keyValuePair.Value.weight;
-                } while (badCreditsCache >= keyValuePair.Value.weight);
+            else {
+                badCreditsCache = badCredits + keyValuePair.Value.bank;
+                if (keyValuePair.Value.weight <= badCredits + keyValuePair.Value.bank) {
+                    keyValuePair.Value.bank = 0;
+                    do {
+                        switch (keyValuePair.Key) {
+                            case "blackHole":
+                                SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
+                                    ResourceSystem.Instance.levelPartsDictionary["blackHole"].prefab);
+                                break;
+                            case "deathLaser":
+                                SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f));
+                                break;
+                        }
+                        badCreditsCache -= keyValuePair.Value.weight;
+                    } while (badCreditsCache >= keyValuePair.Value.weight);
+                }
+                keyValuePair.Value.bank += badCreditsCache - keyValuePair.Value.bank;
             }
-            keyValuePair.Value.bank += badCreditsCache;
         }
         Despawn(arg1, arg2);
     }
