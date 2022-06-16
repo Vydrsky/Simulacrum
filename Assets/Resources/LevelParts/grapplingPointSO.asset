@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: grapplingPoint
   prefab: {fileID: 8341586554003602970, guid: de46a9dae37385b4a804d9d2fc383c4b, type: 3}
-  weight: 0
+  weight: 10
   isBeneficial: 1

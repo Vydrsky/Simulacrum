@@ -5481,7 +5481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frameLength: 1
   gravityRange: 10
-  gravityForce: 3000
+  gravityForce: 1500
 --- !u!58 &1540764441
 CircleCollider2D:
   m_ObjectHideFlags: 0

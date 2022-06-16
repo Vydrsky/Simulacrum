@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6676671784564344ba5a1c9e62123168, type: 3}
-  m_Name: deathLaserSO
+  m_Name: blackHoleSO
   m_EditorClassIdentifier: 
-  key: deathLaser
-  prefab: {fileID: 2356868415789016828, guid: 4e24daa2f15465e4991ab8c5e0835513, type: 3}
-  weight: 10
+  key: blackHole
+  prefab: {fileID: 2649649069152819578, guid: f587508efcffbee4386dbf56b7585954, type: 3}
+  weight: 60
+  bank: 0
   isBeneficial: 0

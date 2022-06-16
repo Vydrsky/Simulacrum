@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-
+using System.Collections.Generic;
 public class PlayerController : Singleton<PlayerController> {
 
     /************************ FIELDS ************************/
@@ -13,7 +13,7 @@ public class PlayerController : Singleton<PlayerController> {
     private Rigidbody2D rb;
     private Transform laserStartTransform;
     private PlayerInput input;
-
+    
 
     [SerializeField] private Vector2 jumpButtonForce;
     [Range(0f, 20f)]
@@ -44,7 +44,9 @@ public class PlayerController : Singleton<PlayerController> {
                     hook.enabled = true;
                     rb.AddForce(new Vector2(RightForceOnHook, 0f), ForceMode2D.Impulse);
                     break;
-
+                case PlayerState.Death:
+                    HandleDeath();
+                    break;
 
             }
         }
@@ -52,6 +54,7 @@ public class PlayerController : Singleton<PlayerController> {
 
     /************************ INITIALIZE ************************/
     protected override void Awake() {
+        
         base.Awake();
         input = new PlayerInput();
         mainCam = Camera.main;
@@ -71,7 +74,8 @@ public class PlayerController : Singleton<PlayerController> {
 
     /************************ LOOPING ************************/
     private void Update() {
-        if (State == PlayerState.Standing) return;
+        if (State == PlayerState.Standing || State == PlayerState.Death) return;
+        State = ControlStates();
         switch (State) {
             case PlayerState.Freefalling:
 
@@ -82,12 +86,7 @@ public class PlayerController : Singleton<PlayerController> {
                 hookLine.SetPosition(0, laserStartTransform.position);
                 hookLine.SetPosition(1, closestCollider.transform.position);
                 break;
-
-            case PlayerState.Death:
-                HandleDeath();
-                return;
         }
-        State = ControlStates();
     }
 
 
@@ -107,6 +106,7 @@ public class PlayerController : Singleton<PlayerController> {
                 touchInWorldSpace = mainCam.ScreenToWorldPoint(touch.position);
                 touchInWorldSpace.z = 0f;
                 colliders = Physics2D.OverlapCircleAll(touchInWorldSpace, 4f);
+
                 //get the collider to attach to
                 foreach (Collider2D collider in colliders) {
                     if (collider == colliders[0]) closestCollider = collider;

@@ -4,7 +4,8 @@ using UnityEngine;
 public class LevelPart : ScriptableObject {
     public string key;
     public GameObject prefab;
-    public float weight;
+    public uint weight;
+    public uint bank;
     public bool isBeneficial;
 }
 
