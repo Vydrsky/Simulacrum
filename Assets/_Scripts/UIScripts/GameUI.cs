@@ -69,6 +69,11 @@ public class GameUI : Singleton<GameUI> {
         }
     }
 
+    public static void EndGame() {
+        Application.Quit();
+        Debug.Log("Quitting the game...");
+    }
+
     private void CooldownTimer_OnTimerCountingEnd() {
         cooldownTimer.StopTimer();
         jumpButtonImage.fillAmount = 1f;

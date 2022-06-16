@@ -32,6 +32,7 @@ public class AudioManager : Singleton<AudioManager> {
 
     private void GameManager_OnGameStarted() {
         StopAllCoroutines();
+        PlayAudioClip("menuFadeAudioClip",0.7f);
         StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuAudioClip"], 1f));
         StartCoroutine(LerpUpClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
         
