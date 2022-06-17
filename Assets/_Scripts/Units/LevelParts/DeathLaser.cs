@@ -22,7 +22,7 @@ public class DeathLaser : MonoBehaviour {
     }
 
     private void Start() {
-        //SetLaser();
+        SetLaser();
     }
 
     /************************ LOOPING ************************/

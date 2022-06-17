@@ -31,21 +31,19 @@ public class AudioManager : Singleton<AudioManager> {
     }
 
     private void GameManager_OnGameStarted() {
-        StopAllCoroutines();
-        PlayAudioClip("menuFadeAudioClip",0.7f);
         StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuAudioClip"], 1f));
-        StartCoroutine(LerpUpClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
+        StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuIntroAudioClip"], 1f));
+        StartCoroutine(LerpUpClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 0.2f));
         
     }
 
     private void GameManager_OnMenuLoaded() {
-        StopAllCoroutines();
-        PlayAudioClip("menuAudioClip", 1f);
+        PlayAudioClip("menuIntroAudioClip", 1f);
+        StartCoroutine(WaitForClipToEndAndStartAnother_Coroutine(audioSourceDictionary["menuIntroAudioClip"], audioSourceDictionary["menuAudioClip"]));
     }
 
     private void OnDeath() {
         Debug.Log("DEATH SOUND");
-        StopAllCoroutines();
         StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
     }
 
@@ -104,4 +102,9 @@ public class AudioManager : Singleton<AudioManager> {
         source.pitch = 0f;
     }
 
+    private IEnumerator WaitForClipToEndAndStartAnother_Coroutine(AudioSource source1, AudioSource source2) {
+        yield return new WaitForSeconds(source1.clip.length);
+        source1.Stop();
+        source2.Play();
+    }
 }

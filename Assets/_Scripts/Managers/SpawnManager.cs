@@ -8,12 +8,17 @@ public class SpawnManager : Singleton<SpawnManager> {
     [SerializeField] private uint goodCredits=150;
     [SerializeField] private uint badCredits=20;
     [SerializeField] private Transform LevelParts;
+    [SerializeField] private Transform TutorialParts;
+    [SerializeField] private RectTransform WorldSpaceCanvasTransform;
     [SerializeField] private float spawnSpacing;
 
     /************************ INITIALIZE ************************/
     private void Start() {
         ParallaxEnvironment.OnLevelPartsMoved += ParallaxEnvironment_OnLevelPartsMoved;
+        GameManager.OnGameStarted += GameManager_OnGameStarted;
     }
+
+
 
 
     /************************ LOOPING ************************/
@@ -86,44 +91,54 @@ public class SpawnManager : Singleton<SpawnManager> {
     private void ParallaxEnvironment_OnLevelPartsMoved(Transform arg1, float arg2) {
         uint badCreditsCache;
         uint goodCreditsCache;
-        foreach (KeyValuePair<string, LevelPart> keyValuePair in ResourceSystem.Instance.levelPartsDictionary) {
-            //set credits function
-            if (keyValuePair.Value.isBeneficial) {
-                goodCreditsCache = goodCredits + keyValuePair.Value.bank;
-                if (keyValuePair.Value.weight <= goodCredits + keyValuePair.Value.bank) {
-                    keyValuePair.Value.bank = 0;
-                    do {
-                        SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
-                                      keyValuePair.Value.prefab);
-                        goodCreditsCache -= keyValuePair.Value.weight;
-                    } while (goodCreditsCache > keyValuePair.Value.weight);
+        if ((PlayerController.Instance.transform.position.x > 80f && PlayerPrefs.GetInt("tutorialFinished")==0) || PlayerPrefs.GetInt("tutorialFinished") == 1) {
+            foreach (KeyValuePair<string, LevelPart> keyValuePair in ResourceSystem.Instance.levelPartsDictionary) {
+                //set credits function
+                if (keyValuePair.Value.isBeneficial) {
+                    goodCreditsCache = goodCredits + keyValuePair.Value.bank;
+                    if (keyValuePair.Value.weight <= goodCredits + keyValuePair.Value.bank) {
+                        keyValuePair.Value.bank = 0;
+                        do {
+                            SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
+                                          keyValuePair.Value.prefab);
+                            goodCreditsCache -= keyValuePair.Value.weight;
+                        } while (goodCreditsCache > keyValuePair.Value.weight);
+                    }
+                    keyValuePair.Value.bank += goodCreditsCache - keyValuePair.Value.bank;
                 }
-                keyValuePair.Value.bank += goodCreditsCache - keyValuePair.Value.bank;
-            }
-            else {
-                badCreditsCache = badCredits + keyValuePair.Value.bank;
-                if (keyValuePair.Value.weight <= badCredits + keyValuePair.Value.bank) {
-                    keyValuePair.Value.bank = 0;
-                    do {
-                        switch (keyValuePair.Key) {
-                            case "blackHole":
-                                SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
-                                    ResourceSystem.Instance.levelPartsDictionary["blackHole"].prefab);
-                                break;
-                            case "deathLaser":
-                                SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f));
-                                break;
-                        }
-                        badCreditsCache -= keyValuePair.Value.weight;
-                    } while (badCreditsCache >= keyValuePair.Value.weight);
+                else {
+                    badCreditsCache = badCredits + keyValuePair.Value.bank;
+                    if (keyValuePair.Value.weight <= badCredits + keyValuePair.Value.bank) {
+                        keyValuePair.Value.bank = 0;
+                        do {
+                            switch (keyValuePair.Key) {
+                                case "blackHole":
+                                    SpawnSingular(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f),
+                                        ResourceSystem.Instance.levelPartsDictionary["blackHole"].prefab);
+                                    break;
+                                case "deathLaser":
+                                    SpawnDeathLasers(1, arg1.position, arg1.position + new Vector3(arg2, 30f - arg1.position.y, 0f));
+                                    break;
+                            }
+                            badCreditsCache -= keyValuePair.Value.weight;
+                        } while (badCreditsCache >= keyValuePair.Value.weight);
+                    }
+                    keyValuePair.Value.bank += badCreditsCache - keyValuePair.Value.bank;
                 }
-                keyValuePair.Value.bank += badCreditsCache - keyValuePair.Value.bank;
             }
+            Despawn(arg1, arg2);
         }
-        Despawn(arg1, arg2);
+    }
+
+    private void GameManager_OnGameStarted() {
+        if (PlayerPrefs.GetInt("tutorialFinished") == 1) {
+            TutorialParts.gameObject.SetActive(false);
+            WorldSpaceCanvasTransform.gameObject.SetActive(false);
+        }
     }
 
     private void OnDestroy() {
         ParallaxEnvironment.OnLevelPartsMoved -= ParallaxEnvironment_OnLevelPartsMoved;
+        GameManager.OnGameStarted -= GameManager_OnGameStarted;
     }
 }

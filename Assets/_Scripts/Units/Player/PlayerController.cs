@@ -90,12 +90,10 @@ public class PlayerController : Singleton<PlayerController> {
                 hook.enabled = true;
                 switch (closestCollider.gameObject.tag) {
                     case "booster":
-                        Vector3 dir = closestCollider.transform.position - transform.position;
                         rb.velocity = Vector2.zero;
                         hook.distance = 1.5f;
                         hook.frequency = 0.65f;
                         hook.dampingRatio = 1f;
-                        //rb.AddForce(dir.normalized * BoostForce, ForceMode2D.Impulse);
                         break;
                     case "grapplingPoint":
                         hook.distance = Vector3.Distance(transform.position, closestCollider.gameObject.transform.position);
@@ -157,7 +155,7 @@ public class PlayerController : Singleton<PlayerController> {
     }
 
     private void GameManager_OnGameStarted() {
-        rb.AddForce(new Vector3(10f, 15f, 0f),ForceMode2D.Impulse);
+        rb.AddForce(new Vector3(18f, 20f, 0f),ForceMode2D.Impulse);
     }
 
     private void GameUI_OnJump() {
