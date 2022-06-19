@@ -14,11 +14,6 @@ public class AudioManager : Singleton<AudioManager> {
 
     protected override void Awake() {
         base.Awake();
-        GameManager.OnGameStarted += GameManager_OnGameStarted;
-        GameManager.OnMenuLoaded += GameManager_OnMenuLoaded;
-        DeathPlane.OnDeath += OnDeath;
-        DeathLaser.OnDeath += OnDeath;
-        BlackHole.OnDeath += BlackHole_OnDeath;
     }
 
 
@@ -27,11 +22,19 @@ public class AudioManager : Singleton<AudioManager> {
         foreach (AudioSource source in sources) {
             audioSourceDictionary.Add(source.clip.name, source);
         }
-
+        GameManager.OnGameStarted += GameManager_OnGameStarted;
+        GameManager.OnMenuLoaded += GameManager_OnMenuLoaded;
+        DeathPlane.OnDeath += OnDeath;
+        DeathLaser.OnDeath += OnDeath;
+        BlackHole.OnDeath += BlackHole_OnDeath;
         PlayerController.OnHooked += Instance_OnHooked;
         PlayerController.OnDeHooked += Instance_OnDeHooked;
+        GameUI.OnJump += GameUI_OnJump;
     }
 
+    private void GameUI_OnJump() {
+        PlayAudioClip("Jump");
+    }
 
     private void GameManager_OnGameStarted() {
         StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuAudioClip"], 1f));
@@ -46,13 +49,13 @@ public class AudioManager : Singleton<AudioManager> {
     }
 
     private void OnDeath() {
-        
+        PlayAudioClip("Death");
         StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
         StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], 1f));
     }
 
     private void BlackHole_OnDeath() {
-        
+        PlayAudioClip("Death");
         StartCoroutine(LerpPitchUpVolumeDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
         StartCoroutine(LerpPitchUpVolumeDownClip_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], 1f));
     }
@@ -65,6 +68,7 @@ public class AudioManager : Singleton<AudioManager> {
         BlackHole.OnDeath -= BlackHole_OnDeath;
         PlayerController.OnHooked -= Instance_OnHooked;
         PlayerController.OnDeHooked -= Instance_OnDeHooked;
+        GameUI.OnJump -= GameUI_OnJump;
     }
 
     public void PlayAudioClip(string clipKey, Vector2 position, float volume = 1f) {

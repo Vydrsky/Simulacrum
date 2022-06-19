@@ -94,7 +94,7 @@ public class GameUI : Singleton<GameUI> {
 
     private void RandomizeDeathText() {
         UnityEngine.Random.InitState(UnityEngine.Random.Range(int.MinValue, int.MaxValue));
-        String[] texts = { "Never Lucky", "Skill Issue", ":C", "Just Dodge", "Did you try not getting hit?", "Nice try", "Dont give up!" };
+        String[] texts = { "Never Lucky", "Skill Issue", ":C", "Just Dodge", "Did you try not getting hit?", "Nice try", "Dont give up!","Better luck next time","Totaly not your fault","Expected something better"};
         int rand = UnityEngine.Random.Range(0, texts.Length-1);
         deathText.SetText(texts[rand]);
     }
