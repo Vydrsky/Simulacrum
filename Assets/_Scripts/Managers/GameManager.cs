@@ -2,11 +2,16 @@ using UnityEngine;
 using System;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : Singleton<GameManager> {
 
     /************************ FIELDS ************************/
 
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI highscoreText;
+
+    public static int HighScore { get; private set; }
 
     public static event Action<GameState> OnBeforeStateChanged;
     public static event Action<GameState> OnAfterStateChanged;
@@ -22,9 +27,15 @@ public class GameManager : Singleton<GameManager> {
         State = GameState.Starting;
         DeathPlane.OnDeath += Death_OnDeath;
         DeathLaser.OnDeath += Death_OnDeath;
+        BlackHole.OnDeath += Death_OnDeath;
     }
+
+
     private void Start() {
         OnMenuLoaded?.Invoke();
+        HighScore = 0;
+        HighScore = PlayerPrefs.GetInt("highscore");
+        highscoreText.SetText("Highscore: " + HighScore);
     }
 
     public void ChangeState(GameState newState) {
@@ -50,10 +61,11 @@ public class GameManager : Singleton<GameManager> {
 
     private void Death_OnDeath() {
         PlayerController.Instance.State = PlayerController.PlayerState.Death;
+        if(HighScore < int.Parse(scoreText.text))
+            PlayerPrefs.SetInt("highscore",int.Parse(scoreText.text));
         ChangeState(GameState.Ending);
         StartCoroutine(TimeEffectOnDeathCoroutine());
     }
-
 
     private void HandleStarting() {
         PlayerController.Instance.State = PlayerController.PlayerState.Standing;
@@ -96,6 +108,7 @@ public class GameManager : Singleton<GameManager> {
     private void OnDestroy() {
         DeathPlane.OnDeath -= Death_OnDeath;
         DeathLaser.OnDeath -= Death_OnDeath;
+        BlackHole.OnDeath -= Death_OnDeath;
         Time.timeScale = 1f;
     }
 }

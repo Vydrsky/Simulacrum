@@ -11,6 +11,8 @@ public class BlackHole : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private Timer timer;
     private int iterator=0;
+
+    public static event Action OnDeath;
     /************************ INITIALIZE ************************/
     private void Awake() {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -48,10 +50,13 @@ public class BlackHole : MonoBehaviour {
         foreach(Collider2D collider in colliders) {
             if (collider.gameObject.tag.Contains("Player")) {
                 Vector2 direction = (transform.position - collider.transform.position).normalized;
-                Debug.Log("SUCTION");
                 collider.GetComponent<Rigidbody2D>().AddForce(direction * gravityForce * Time.fixedDeltaTime);
             }
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag.Contains("Player")) {
+            OnDeath?.Invoke();
+        }
+    }
 }

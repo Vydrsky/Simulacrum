@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System;
 
 public class PlayerAnimation : Singleton<PlayerAnimation> {
@@ -11,10 +12,12 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     private SpriteRenderer spriteRenderer;
     private Timer timer;
     private int spriteIterator = 0;
+    private float dissolveAmount = 1;
 
     [SerializeField] private float yThresholdSpeed;
     [SerializeField] private float frameLength;
     [SerializeField] private GameObject fragmentPrefab;
+    [SerializeField] private Material playerMaterial;
 
     /************************ INITIALIZE ************************/
     protected override void Awake() {
@@ -22,11 +25,13 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
         hook = GetComponent<SpringJoint2D>();
         spriteRenderer = transform.Find("Graphic").GetComponent<SpriteRenderer>();
         timer = new Timer();
+        playerMaterial.SetFloat("_DissolveAmount", 1f);
     }
 
     private void Start() {
         DeathPlane.OnDeath += Death_OnDeath;
         DeathLaser.OnDeath += Death_OnDeath;
+        BlackHole.OnDeath += BlackHoleDeath_OnDeath;
         timer.OnTimerCountingEnd += Timer_OnTimerCountingEnd;
     }
 
@@ -76,7 +81,10 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
             temprb.AddTorque(4f,ForceMode2D.Impulse);
         }
     }
-
+    
+    private void BlackHoleDeath_OnDeath() {
+        StartCoroutine(DissolvePlayer());
+    }
 
     private void Timer_OnTimerCountingEnd() {
         timer.StopTimer();
@@ -94,6 +102,14 @@ public class PlayerAnimation : Singleton<PlayerAnimation> {
     private void OnDestroy() {
         DeathPlane.OnDeath -= Death_OnDeath;
         DeathLaser.OnDeath -= Death_OnDeath;
+        BlackHole.OnDeath -= BlackHoleDeath_OnDeath;
     }
 
+    private IEnumerator DissolvePlayer() {
+        do {
+            dissolveAmount = dissolveAmount -= Time.deltaTime;
+            playerMaterial.SetFloat("_DissolveAmount", dissolveAmount);
+            yield return null;
+        } while (dissolveAmount >= 0f);
+    }
 }

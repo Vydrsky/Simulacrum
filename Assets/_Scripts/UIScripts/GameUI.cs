@@ -34,7 +34,7 @@ public class GameUI : Singleton<GameUI> {
 
     /************************ LOOPING ************************/
     private void Update() {
-        scoreText.text = Mathf.Clamp(mainCam.transform.position.x,0f,Mathf.Infinity).ToString("0");
+        scoreText.text = Mathf.Clamp(mainCam.transform.position.x - 13,0f,Mathf.Infinity).ToString("0");
         cooldownTimer.Tick();
         if (cooldownTimer.isRunning) {
             jumpButtonImage.fillAmount += Time.deltaTime/jumpCooldown;
@@ -55,7 +55,6 @@ public class GameUI : Singleton<GameUI> {
 
     public void HandleTryAgainButton() {
         OnRetryPressed?.Invoke();
-        GameManager.Instance.ReloadScene();
     }
 
     public void DisableAllUi() {

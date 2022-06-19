@@ -9,7 +9,6 @@ public class AudioManager : Singleton<AudioManager> {
 
     private Dictionary<string, AudioSource> audioSourceDictionary = new Dictionary<string, AudioSource>();
 
-    bool goingUp = true;
 
     /************************ METHODS ************************/
 
@@ -19,6 +18,7 @@ public class AudioManager : Singleton<AudioManager> {
         GameManager.OnMenuLoaded += GameManager_OnMenuLoaded;
         DeathPlane.OnDeath += OnDeath;
         DeathLaser.OnDeath += OnDeath;
+        BlackHole.OnDeath += BlackHole_OnDeath;
     }
 
 
@@ -43,8 +43,13 @@ public class AudioManager : Singleton<AudioManager> {
     }
 
     private void OnDeath() {
-        Debug.Log("DEATH SOUND");
+        
         StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
+    }
+
+    private void BlackHole_OnDeath() {
+        
+        StartCoroutine(LerpPitchUpVolumeDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
     }
 
     private void OnDestroy() {
@@ -52,6 +57,7 @@ public class AudioManager : Singleton<AudioManager> {
         GameManager.OnMenuLoaded -= GameManager_OnMenuLoaded;
         DeathPlane.OnDeath -= OnDeath;
         DeathLaser.OnDeath -= OnDeath;
+        BlackHole.OnDeath -= BlackHole_OnDeath;
     }
 
     public void PlayAudioClip(string clipKey, Vector2 position, float volume = 1f) {
@@ -96,6 +102,18 @@ public class AudioManager : Singleton<AudioManager> {
     private IEnumerator LerpPitchDownClip_Coroutine(AudioSource source, float speedMultiplier) {
         while (source.pitch >= 0f) {
             source.pitch -= Time.deltaTime * speedMultiplier;
+            yield return null;
+        }
+        source.Stop();
+        source.pitch = 0f;
+    }
+
+    private IEnumerator LerpPitchUpVolumeDownClip_Coroutine(AudioSource source, float speedMultiplier) {
+        while (source.volume >=0f) {
+            if (source.pitch <= 5f) {
+                source.pitch += Time.deltaTime * speedMultiplier*2f;
+            }
+            source.volume -= Time.deltaTime * speedMultiplier;
             yield return null;
         }
         source.Stop();
