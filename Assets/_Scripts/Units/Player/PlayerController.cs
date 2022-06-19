@@ -159,6 +159,7 @@ public class PlayerController : Singleton<PlayerController> {
     }
 
     private void GameUI_OnJump() {
+        State = PlayerState.Freefalling;
         rb.velocity = new Vector2(rb.velocity.x, 0f);
         rb.AddForce(new Vector2(jumpButtonForce.x, jumpButtonForce.y), ForceMode2D.Impulse);
     }

@@ -11,12 +11,12 @@ public class CameraFollow : MonoBehaviour {
 
     private void Start() {
         GameManager.OnGameStarted += GameManager_OnGameStarted;
+        vCamMenu.m_Lens.OrthographicSize = 5 * Screen.width / Screen.height;
     }
 
 
     /************************ LOOPING ************************/
     private void Update() {
-        
     }
 
     /************************ METHODS ************************/

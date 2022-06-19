@@ -19,7 +19,7 @@ public class PostProcessingManager : Singleton<PostProcessingManager> {
         globalVolumeProfile.TryGet(out chromaticAberration);
         globalVolumeProfile.TryGet(out lensDistortion);
         chromaticAberration.intensity.value = 0f;
-        lensDistortion.intensity.value = 0.15f;
+        lensDistortion.intensity.value = 0.2f;
     }
 
     /************************ LOOPING ************************/
@@ -40,7 +40,7 @@ public class PostProcessingManager : Singleton<PostProcessingManager> {
     private IEnumerator Abberate(float multiplier) {
 
         do {
-            if(lensDistortion.intensity.value < 0.3f) {
+            if(lensDistortion.intensity.value < 0.35f) {
                 lensDistortion.intensity.value += Time.deltaTime * multiplier/2;
             }
             chromaticAberration.intensity.value += Time.deltaTime * multiplier;

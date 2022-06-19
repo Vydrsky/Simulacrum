@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 using System;
 
 public class GameUI : Singleton<GameUI> {
@@ -9,6 +10,7 @@ public class GameUI : Singleton<GameUI> {
     /************************ FIELDS ************************/
 
     private TextMeshProUGUI scoreText;
+    private TextMeshProUGUI deathText;
     private Camera mainCam;
     private Image jumpButtonImage;
     [SerializeField] private float jumpCooldown = 5f;
@@ -22,6 +24,7 @@ public class GameUI : Singleton<GameUI> {
     protected override void Awake() {
         base.Awake();
         scoreText = transform.Find("scoreText").GetComponent<TextMeshProUGUI>();
+        deathText = transform.Find("deathText").GetComponent<TextMeshProUGUI>();
         cooldownTimer = new Timer();
         jumpButtonImage = transform.Find("jumpButton").GetComponent<Image>();
         jumpButtonImage.fillAmount = 1f;
@@ -45,7 +48,7 @@ public class GameUI : Singleton<GameUI> {
     
     public void HandleJumpButton() {
 
-        if (!cooldownTimer.isRunning && PlayerController.Instance.State == PlayerController.PlayerState.Freefalling) {
+        if (!cooldownTimer.isRunning && PlayerController.Instance.State != PlayerController.PlayerState.Death) {
             jumpButtonImage.fillAmount = 0;
             OnJump?.Invoke();
             cooldownTimer.StartTimer(jumpCooldown);
@@ -63,9 +66,8 @@ public class GameUI : Singleton<GameUI> {
         }
     }
     public void EnableEndingUi() {
-        foreach(GameObject obj in endingUiList) {
-            obj.SetActive(true);
-        }
+        RandomizeDeathText();
+        StartCoroutine(WaitWithEndingMenu());
     }
 
     public static void EndGame() {
@@ -81,4 +83,20 @@ public class GameUI : Singleton<GameUI> {
     private void OnDestroy() {
         cooldownTimer.OnTimerCountingEnd -= CooldownTimer_OnTimerCountingEnd;
     }
+
+    private IEnumerator WaitWithEndingMenu() {
+        yield return new WaitForSeconds(1f);
+        foreach (GameObject obj in endingUiList) {
+            obj.SetActive(true);
+        }
+    }
+
+
+    private void RandomizeDeathText() {
+        UnityEngine.Random.InitState(UnityEngine.Random.Range(int.MinValue, int.MaxValue));
+        String[] texts = { "Never Lucky", "Skill Issue", ":C", "Just Dodge", "Did you try not getting hit?", "Nice try", "Dont give up!" };
+        int rand = UnityEngine.Random.Range(0, texts.Length-1);
+        deathText.SetText(texts[rand]);
+    }
+
 }
