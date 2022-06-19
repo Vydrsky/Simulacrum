@@ -28,13 +28,16 @@ public class AudioManager : Singleton<AudioManager> {
             audioSourceDictionary.Add(source.clip.name, source);
         }
 
+        PlayerController.OnHooked += Instance_OnHooked;
+        PlayerController.OnDeHooked += Instance_OnDeHooked;
     }
+
 
     private void GameManager_OnGameStarted() {
         StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuAudioClip"], 1f));
         StartCoroutine(LerpDownClip_Coroutine(audioSourceDictionary["menuIntroAudioClip"], 1f));
-        StartCoroutine(LerpUpClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 0.2f));
-        
+        StartCoroutine(LerpUpClip_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], 0.5f));
+        StartCoroutine(WaitForClipToEndAndStartAnother_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], audioSourceDictionary["gameplayAudioClip"]));
     }
 
     private void GameManager_OnMenuLoaded() {
@@ -45,11 +48,13 @@ public class AudioManager : Singleton<AudioManager> {
     private void OnDeath() {
         
         StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
+        StartCoroutine(LerpPitchDownClip_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], 1f));
     }
 
     private void BlackHole_OnDeath() {
         
         StartCoroutine(LerpPitchUpVolumeDownClip_Coroutine(audioSourceDictionary["gameplayAudioClip"], 1f));
+        StartCoroutine(LerpPitchUpVolumeDownClip_Coroutine(audioSourceDictionary["gameplayIntroAudioClip"], 1f));
     }
 
     private void OnDestroy() {
@@ -58,6 +63,8 @@ public class AudioManager : Singleton<AudioManager> {
         DeathPlane.OnDeath -= OnDeath;
         DeathLaser.OnDeath -= OnDeath;
         BlackHole.OnDeath -= BlackHole_OnDeath;
+        PlayerController.OnHooked -= Instance_OnHooked;
+        PlayerController.OnDeHooked -= Instance_OnDeHooked;
     }
 
     public void PlayAudioClip(string clipKey, Vector2 position, float volume = 1f) {
@@ -124,5 +131,15 @@ public class AudioManager : Singleton<AudioManager> {
         yield return new WaitForSeconds(source1.clip.length);
         source1.Stop();
         source2.Play();
+    }
+
+    private void Instance_OnDeHooked() {
+        audioSourceDictionary["WhipOFF"].pitch = UnityEngine.Random.Range(0.85f, 1.1f);
+        PlayAudioClip("WhipOFF");
+    }
+
+    private void Instance_OnHooked() {
+        audioSourceDictionary["WhipON"].pitch = UnityEngine.Random.Range(0.85f, 1.1f);
+        PlayAudioClip("WhipON");
     }
 }

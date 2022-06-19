@@ -20,6 +20,9 @@ public class PlayerController : Singleton<PlayerController> {
     [SerializeField] private float ForceOnHook = 5f;
     [SerializeField] private LineRenderer hookLine;
 
+    public static event Action OnHooked;
+    public static event Action OnDeHooked;
+
     private PlayerState state;
     public PlayerState State {
 
@@ -27,8 +30,9 @@ public class PlayerController : Singleton<PlayerController> {
 
         set {
             if (value == state) return;
+            PlayerState prevoiusState = state;
             state = value;
-            ControlStateEntry();
+            ControlStateEntry(prevoiusState);
         }
     }
 
@@ -72,9 +76,12 @@ public class PlayerController : Singleton<PlayerController> {
 
     /************************ METHODS ************************/
 
-    private void ControlStateEntry() {
+    private void ControlStateEntry(PlayerState previousState) {
         switch (state) {
             case PlayerState.Freefalling:
+                if (previousState != PlayerState.Standing) {
+                    OnDeHooked?.Invoke();
+                }
                 rb.isKinematic = false;
                 hook.enabled = false;
                 hookLine.enabled = false;
@@ -88,6 +95,9 @@ public class PlayerController : Singleton<PlayerController> {
                 hook.connectedAnchor = closestCollider.transform.position;
                 hookLine.enabled = true;
                 hook.enabled = true;
+                if (previousState != PlayerState.Standing) {
+                    OnHooked?.Invoke();
+                }
                 switch (closestCollider.gameObject.tag) {
                     case "booster":
                         rb.velocity = Vector2.zero;
