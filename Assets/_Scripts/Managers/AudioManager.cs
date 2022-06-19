@@ -123,6 +123,7 @@ public class AudioManager : Singleton<AudioManager> {
             source.volume -= Time.deltaTime * speedMultiplier;
             yield return null;
         }
+        source.volume = 0f;
         source.Stop();
         source.pitch = 0f;
     }

@@ -5164,7 +5164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0377a6e3f527c488a6325b56d2ca2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpButtonForce: {x: 2, y: 20}
+  jumpButtonForce: {x: 3, y: 22}
   ForceOnHook: 5
   hookLine: {fileID: 7256604511768314067}
 --- !u!231 &7256604512497860107

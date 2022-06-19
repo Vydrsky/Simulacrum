@@ -795,7 +795,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 10
+      value: 8
       mode: 0
       spread: 0
       speed:
@@ -4866,7 +4866,7 @@ ParticleSystemForceField:
   m_Parameters:
     m_Shape: 0
     m_StartRange: 0
-    m_EndRange: 10
+    m_EndRange: 8
     m_Length: 1
     m_GravityFocus: 0
     m_RotationRandomness: {x: 0, y: 0}
@@ -5480,8 +5480,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frameLength: 1
-  gravityRange: 10
-  gravityForce: 700
+  gravityRange: 8
+  gravityForce: 900
 --- !u!58 &1540764441
 CircleCollider2D:
   m_ObjectHideFlags: 0
